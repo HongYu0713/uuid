@@ -1,1850 +1,745 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>🌾 Grain Collector - Harvest Arcade</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>UUID Generator Pro - Free Random UUID v4 Generator</title>
+
+<meta name="description" content="Generate random UUID online for free. UUID v4 generator with multiple languages support.">
+<meta name="keywords" content="UUID Generator, Random UUID, UUID v4, GUID Generator, Developer Tools">
+
+
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;900&display=swap');
 
-* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
-body {
-  overflow: hidden;
-  background: #1a0f00;
-  font-family: 'Nunito', sans-serif;
-  touch-action: none;
-  user-select: none;
-  -webkit-user-select: none;
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:
+    Arial,
+    "Microsoft YaHei",
+    sans-serif;
 }
 
-canvas {
-  display: block;
-  position: absolute;
-  top: 0; left: 0;
+
+body{
+    background:#f8fafc;
+    color:#1e293b;
 }
 
-/* UI Overlay */
-.ui-overlay {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  pointer-events: none;
-  z-index: 10;
+
+header{
+    background:#2563eb;
+    color:white;
+    padding:20px;
+    text-align:center;
 }
 
-.ui-overlay > * { pointer-events: auto; }
 
-/* HUD */
-.hud {
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  padding: 10px 15px;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  z-index: 20;
-  opacity: 0;
-  transition: opacity 0.5s;
+header h1{
+    font-size:32px;
 }
 
-.hud.visible { opacity: 1; }
 
-.hud-panel {
-  background: linear-gradient(135deg, rgba(90,50,10,0.92), rgba(60,30,5,0.92));
-  border: 2px solid #d4a04a;
-  border-radius: 12px;
-  padding: 8px 14px;
-  color: #ffe8b0;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
-  min-width: 100px;
+.language{
+    margin-top:15px;
 }
 
-.hud-label {
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  opacity: 0.7;
-  font-weight: 700;
+
+select{
+    padding:8px 15px;
+    border-radius:8px;
+    border:none;
 }
 
-.hud-value {
-  font-family: 'Fredoka One', cursive;
-  font-size: 22px;
-  color: #ffd700;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+
+
+.container{
+
+    max-width:900px;
+    margin:40px auto;
+    padding:20px;
+
 }
 
-.hud-center { text-align: center; }
 
-.combo-display {
-  position: absolute;
-  top: 70px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-family: 'Fredoka One', cursive;
-  font-size: 28px;
-  color: #ff6b00;
-  text-shadow: 0 0 20px rgba(255,107,0,0.6), 0 2px 4px rgba(0,0,0,0.5);
-  opacity: 0;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  z-index: 25;
+
+.card{
+
+    background:white;
+    border-radius:16px;
+    padding:30px;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,.08);
+
 }
 
-.combo-display.visible { opacity: 1; }
-.combo-display.pulse { animation: comboPulse 0.3s ease; }
 
-@keyframes comboPulse {
-  0% { transform: translateX(-50%) scale(1); }
-  50% { transform: translateX(-50%) scale(1.4); }
-  100% { transform: translateX(-50%) scale(1); }
+
+h2{
+    text-align:center;
+    margin-bottom:25px;
 }
 
-/* Pause Button */
-.pause-btn {
-  position: absolute;
-  top: 12px;
-  right: 15px;
-  width: 44px; height: 44px;
-  background: linear-gradient(135deg, rgba(90,50,10,0.92), rgba(60,30,5,0.92));
-  border: 2px solid #d4a04a;
-  border-radius: 12px;
-  color: #ffe8b0;
-  font-size: 20px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 30;
-  opacity: 0;
-  transition: all 0.3s;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+
+
+.option{
+
+display:flex;
+justify-content:center;
+gap:20px;
+margin-bottom:20px;
+
 }
 
-.pause-btn.visible { opacity: 1; }
-.pause-btn:hover { transform: scale(1.1); background: linear-gradient(135deg, rgba(120,70,15,0.95), rgba(80,40,10,0.95)); }
-.pause-btn:active { transform: scale(0.95); }
 
-/* Screens */
-.screen {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 50;
-  opacity: 0;
-  transition: opacity 0.5s ease;
-  pointer-events: none;
+
+input{
+
+width:100px;
+padding:10px;
+border-radius:8px;
+border:1px solid #ddd;
+
 }
 
-.screen.active { opacity: 1; pointer-events: auto; }
 
-.screen-bg {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: radial-gradient(ellipse at center, rgba(20,10,0,0.7) 0%, rgba(10,5,0,0.9) 100%);
+
+button{
+
+background:#2563eb;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:10px;
+cursor:pointer;
+font-size:16px;
+
 }
 
-/* Start Screen */
-.start-screen .game-title {
-  font-family: 'Fredoka One', cursive;
-  font-size: clamp(36px, 8vw, 72px);
-  color: #ffd700;
-  text-shadow: 0 4px 8px rgba(0,0,0,0.5), 0 0 40px rgba(255,215,0,0.3);
-  margin-bottom: 5px;
-  z-index: 1;
-  animation: titleFloat 3s ease-in-out infinite;
+
+
+button:hover{
+
+background:#1d4ed8;
+
 }
 
-.start-screen .game-subtitle {
-  font-size: clamp(14px, 3vw, 20px);
-  color: #ffe8b0;
-  opacity: 0.8;
-  margin-bottom: 30px;
-  z-index: 1;
+
+
+.result{
+
+margin-top:25px;
+
+background:#f1f5f9;
+
+padding:20px;
+
+border-radius:10px;
+
+min-height:150px;
+
+word-break:break-all;
+
+font-family:monospace;
+
 }
 
-@keyframes titleFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+
+
+.actions{
+
+display:flex;
+gap:15px;
+justify-content:center;
+margin-top:20px;
+
 }
 
-.grain-preview {
-  font-size: clamp(28px, 6vw, 48px);
-  margin-bottom: 30px;
-  z-index: 1;
-  animation: grainBounce 2s ease-in-out infinite;
+
+
+.features{
+
+margin-top:40px;
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(220px,1fr));
+
+gap:20px;
+
 }
 
-@keyframes grainBounce {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  25% { transform: translateY(-8px) rotate(-5deg); }
-  75% { transform: translateY(-5px) rotate(5deg); }
+
+
+.feature{
+
+background:white;
+
+padding:25px;
+
+border-radius:15px;
+
+text-align:center;
+
+box-shadow:
+0 5px 20px rgba(0,0,0,.06);
+
 }
 
-/* Buttons */
-.game-btn {
-  font-family: 'Fredoka One', cursive;
-  font-size: clamp(16px, 3vw, 22px);
-  padding: 14px 40px;
-  border: 3px solid #d4a04a;
-  border-radius: 16px;
-  cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  z-index: 1;
-  margin: 6px;
-  min-width: 200px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
+
+
+footer{
+
+text-align:center;
+
+padding:30px;
+
+color:#64748b;
+
 }
 
-.game-btn::before {
-  content: '';
-  position: absolute;
-  top: 0; left: -100%;
-  width: 100%; height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-  transition: left 0.5s;
+
+
+.ad{
+
+height:90px;
+
+background:#e2e8f0;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+margin:20px 0;
+
+color:#64748b;
+
 }
 
-.game-btn:hover::before { left: 100%; }
 
-.btn-primary {
-  background: linear-gradient(135deg, #e8a020, #c07010);
-  color: #fff;
-  box-shadow: 0 6px 20px rgba(200,120,20,0.4), inset 0 2px 0 rgba(255,255,255,0.2);
-}
-
-.btn-primary:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 8px 30px rgba(200,120,20,0.6); }
-.btn-primary:active { transform: translateY(1px) scale(0.98); }
-
-.btn-secondary {
-  background: linear-gradient(135deg, rgba(90,50,10,0.9), rgba(60,30,5,0.9));
-  color: #ffe8b0;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-}
-
-.btn-secondary:hover { transform: translateY(-2px) scale(1.03); }
-.btn-secondary:active { transform: translateY(1px) scale(0.98); }
-
-/* Countdown */
-.countdown {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 60;
-  pointer-events: none;
-  opacity: 0;
-}
-
-.countdown.active { opacity: 1; }
-
-.countdown-number {
-  font-family: 'Fredoka One', cursive;
-  font-size: clamp(80px, 20vw, 160px);
-  color: #ffd700;
-  text-shadow: 0 0 40px rgba(255,215,0,0.5), 0 4px 8px rgba(0,0,0,0.5);
-  animation: countPop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-@keyframes countPop {
-  0% { transform: scale(2); opacity: 0; }
-  50% { transform: scale(0.8); opacity: 1; }
-  70% { transform: scale(1.1); }
-  100% { transform: scale(1); opacity: 1; }
-}
-
-/* Game Over */
-.game-over-panel {
-  background: linear-gradient(135deg, rgba(60,30,5,0.95), rgba(40,20,3,0.95));
-  border: 3px solid #d4a04a;
-  border-radius: 20px;
-  padding: 30px 40px;
-  text-align: center;
-  z-index: 1;
-  max-width: 90%;
-  width: 380px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1);
-  animation: panelSlide 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-@keyframes panelSlide {
-  0% { transform: translateY(50px) scale(0.8); opacity: 0; }
-  100% { transform: translateY(0) scale(1); opacity: 1; }
-}
-
-.game-over-panel h2 {
-  font-family: 'Fredoka One', cursive;
-  font-size: 32px;
-  color: #ffd700;
-  margin-bottom: 15px;
-}
-
-.stat-row {
-  display: flex;
-  justify-content: space-between;
-  padding: 8px 0;
-  border-bottom: 1px solid rgba(212,160,74,0.2);
-  color: #ffe8b0;
-  font-size: 15px;
-}
-
-.stat-row .stat-val {
-  font-family: 'Fredoka One', cursive;
-  color: #ffd700;
-}
-
-.new-high { color: #ff4444 !important; animation: newHighPulse 0.5s ease infinite alternate; }
-
-@keyframes newHighPulse {
-  0% { text-shadow: 0 0 5px #ff4444; }
-  100% { text-shadow: 0 0 20px #ff4444; }
-}
-
-/* High Score Table */
-.highscore-panel {
-  background: linear-gradient(135deg, rgba(60,30,5,0.95), rgba(40,20,3,0.95));
-  border: 3px solid #d4a04a;
-  border-radius: 20px;
-  padding: 25px 30px;
-  z-index: 1;
-  max-width: 90%;
-  width: 380px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-  animation: panelSlide 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.highscore-panel h2 {
-  font-family: 'Fredoka One', cursive;
-  font-size: 26px;
-  color: #ffd700;
-  text-align: center;
-  margin-bottom: 15px;
-}
-
-.hs-entry {
-  display: flex;
-  justify-content: space-between;
-  padding: 6px 10px;
-  color: #ffe8b0;
-  font-size: 14px;
-  border-radius: 6px;
-}
-
-.hs-entry:nth-child(odd) { background: rgba(255,255,255,0.03); }
-.hs-entry .hs-rank { color: #d4a04a; font-weight: 900; width: 30px; }
-.hs-entry .hs-score { font-family: 'Fredoka One', cursive; color: #ffd700; }
-
-.hs-entry:first-child .hs-rank { color: #ffd700; }
-.hs-entry:nth-child(2) .hs-rank { color: #c0c0c0; }
-.hs-entry:nth-child(3) .hs-rank { color: #cd7f32; }
-
-/* Pause Menu */
-.pause-panel {
-  background: linear-gradient(135deg, rgba(60,30,5,0.95), rgba(40,20,3,0.95));
-  border: 3px solid #d4a04a;
-  border-radius: 20px;
-  padding: 30px 40px;
-  text-align: center;
-  z-index: 1;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-  animation: panelSlide 0.3s ease;
-}
-
-.pause-panel h2 {
-  font-family: 'Fredoka One', cursive;
-  font-size: 32px;
-  color: #ffd700;
-  margin-bottom: 20px;
-}
-
-/* Touch Controls */
-.touch-area {
-  position: absolute;
-  bottom: 0; left: 0;
-  width: 100%;
-  height: 40%;
-  z-index: 15;
-  display: none;
-}
-
-.joystick-container {
-  position: absolute;
-  bottom: 30px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 120px;
-  height: 120px;
-}
-
-.joystick-base {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.1);
-  border: 2px solid rgba(255,255,255,0.2);
-  position: relative;
-}
-
-.joystick-thumb {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: rgba(255,215,0,0.4);
-  border: 2px solid rgba(255,215,0,0.6);
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  transition: none;
-}
-
-/* Achievements Toast */
-.achievement-toast {
-  position: absolute;
-  top: 80px;
-  right: 15px;
-  background: linear-gradient(135deg, rgba(60,30,5,0.95), rgba(40,20,3,0.95));
-  border: 2px solid #ffd700;
-  border-radius: 12px;
-  padding: 12px 18px;
-  color: #ffe8b0;
-  z-index: 100;
-  transform: translateX(120%);
-  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  max-width: 250px;
-}
-
-.achievement-toast.show { transform: translateX(0); }
-
-.achievement-toast .ach-icon { font-size: 24px; }
-.achievement-toast .ach-title {
-  font-family: 'Fredoka One', cursive;
-  color: #ffd700;
-  font-size: 14px;
-}
-.achievement-toast .ach-desc { font-size: 11px; opacity: 0.7; }
-
-/* Instructions */
-.instructions {
-  color: #ffe8b0;
-  opacity: 0.6;
-  font-size: 13px;
-  margin-top: 15px;
-  z-index: 1;
-  text-align: center;
-  line-height: 1.6;
-}
-
-@media (max-width: 600px) {
-  .hud-panel { padding: 5px 10px; min-width: 70px; }
-  .hud-value { font-size: 16px; }
-  .hud-label { font-size: 8px; }
-  .game-over-panel, .highscore-panel { padding: 20px; width: 340px; }
-  .touch-area { display: block; }
-}
 </style>
+
 </head>
+
+
+
 <body>
 
-<canvas id="gameCanvas"></canvas>
 
-<div class="ui-overlay">
-  <!-- HUD -->
-  <div class="hud" id="hud">
-    <div class="hud-panel">
-      <div class="hud-label">Score</div>
-      <div class="hud-value" id="hudScore">0</div>
-    </div>
-    <div class="hud-panel hud-center">
-      <div class="hud-label">Grains</div>
-      <div class="hud-value" id="hudGrains">0</div>
-    </div>
-    <div class="hud-panel" style="text-align:right; margin-right: 50px;">
-      <div class="hud-label">Best</div>
-      <div class="hud-value" id="hudBest">0</div>
-    </div>
-  </div>
 
-  <div class="combo-display" id="comboDisplay">COMBO x2!</div>
+<header>
 
-  <button class="pause-btn" id="pauseBtn" onclick="Game.togglePause()">⏸</button>
 
-  <!-- Start Screen -->
-  <div class="screen start-screen active" id="startScreen">
-    <div class="screen-bg"></div>
-    <div class="game-title">🌾 Grain Collector</div>
-    <div class="game-subtitle">Harvest the field, dodge the dangers!</div>
-    <div class="grain-preview">🌾 🌽 🌾 🫘</div>
-    <button class="game-btn btn-primary" onclick="Game.startGame()">🚜 Start Game</button>
-    <button class="game-btn btn-secondary" onclick="Game.showHighScores()">🏆 High Scores</button>
-    <button class="game-btn btn-secondary" onclick="Game.startDailyChallenge()">📅 Daily Challenge</button>
-    <div class="instructions">
-      ⌨️ Arrow Keys / WASD to move<br>
-      📱 Touch & drag on mobile<br>
-      ⏸ P or ESC to pause
-    </div>
-  </div>
+<h1 id="title">
+UUID Generator Pro
+</h1>
 
-  <!-- Countdown -->
-  <div class="countdown" id="countdown">
-    <div class="countdown-number" id="countdownNum">3</div>
-  </div>
 
-  <!-- Pause Screen -->
-  <div class="screen" id="pauseScreen">
-    <div class="screen-bg"></div>
-    <div class="pause-panel">
-      <h2>⏸ Paused</h2>
-      <button class="game-btn btn-primary" onclick="Game.togglePause()">▶️ Resume</button>
-      <button class="game-btn btn-secondary" onclick="Game.restartGame()">🔄 Restart</button>
-      <button class="game-btn btn-secondary" onclick="Game.quitToMenu()">🏠 Main Menu</button>
-    </div>
-  </div>
+<div class="language">
 
-  <!-- Game Over Screen -->
-  <div class="screen" id="gameOverScreen">
-    <div class="screen-bg"></div>
-    <div class="game-over-panel">
-      <h2>🌻 Harvest Over!</h2>
-      <div class="stat-row"><span>Score</span><span class="stat-val" id="goScore">0</span></div>
-      <div class="stat-row"><span>Grains Collected</span><span class="stat-val" id="goGrains">0</span></div>
-      <div class="stat-row"><span>Max Combo</span><span class="stat-val" id="goCombo">0</span></div>
-      <div class="stat-row"><span>Survival Time</span><span class="stat-val" id="goTime">0s</span></div>
-      <div class="stat-row"><span>High Score</span><span class="stat-val" id="goHigh">0</span></div>
-      <div id="newHighLabel" style="display:none; font-family:'Fredoka One',cursive; color:#ff4444; font-size:20px; margin:10px 0; animation: newHighPulse 0.5s ease infinite alternate;">⭐ NEW HIGH SCORE! ⭐</div>
-      <button class="game-btn btn-primary" onclick="Game.restartGame()" style="margin-top:15px">🔄 Play Again</button>
-      <button class="game-btn btn-secondary" onclick="Game.quitToMenu()">🏠 Main Menu</button>
-    </div>
-  </div>
+<select id="lang" onchange="changeLang()">
 
-  <!-- High Scores Screen -->
-  <div class="screen" id="highScoreScreen">
-    <div class="screen-bg"></div>
-    <div class="highscore-panel">
-      <h2>🏆 High Scores</h2>
-      <div id="highScoreList"></div>
-      <button class="game-btn btn-secondary" onclick="Game.quitToMenu()" style="margin-top:15px;width:100%">🏠 Back</button>
-    </div>
-  </div>
+<option value="zh">中文简体</option>
 
-  <!-- Touch Controls -->
-  <div class="touch-area" id="touchArea">
-    <div class="joystick-container" id="joystickContainer">
-      <div class="joystick-base" id="joystickBase">
-        <div class="joystick-thumb" id="joystickThumb"></div>
-      </div>
-    </div>
-  </div>
+<option value="tw">中文繁体</option>
 
-  <!-- Achievement Toast -->
-  <div class="achievement-toast" id="achievementToast">
-    <div class="ach-icon" id="achIcon">🏅</div>
-    <div class="ach-title" id="achTitle">First Harvest!</div>
-    <div class="ach-desc" id="achDesc">Collect your first grain</div>
-  </div>
+<option value="en">English</option>
+
+<option value="jp">日本語</option>
+
+<option value="fr">Français</option>
+
+<option value="de">Deutsch</option>
+
+<option value="es">Español</option>
+
+<option value="kr">한국어</option>
+
+<option value="ru">Русский</option>
+
+</select>
+
+
 </div>
 
+
+</header>
+
+
+
+
+<div class="container">
+
+
+
+<div class="ad">
+Advertisement
+</div>
+
+
+
+<div class="card">
+
+
+<h2 id="subtitle">
+随机UUID生成器
+</h2>
+
+
+<div class="option">
+
+
+<label>
+
+<span id="numberText">
+数量
+</span>
+
+
+<input id="count" value="1" type="number" min="1" max="100">
+
+
+</label>
+
+
+</div>
+
+
+
+<div style="text-align:center">
+
+
+<button onclick="generateUUID()" id="generate">
+
+生成UUID
+
+</button>
+
+
+</div>
+
+
+
+<div class="result" id="result">
+
+UUID结果显示区域
+
+</div>
+
+
+
+
+<div class="actions">
+
+
+<button onclick="copyUUID()" id="copy">
+
+复制
+
+</button>
+
+
+<button onclick="downloadUUID()" id="download">
+
+下载TXT
+
+</button>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+<div class="features">
+
+
+<div class="feature">
+
+<h3>⚡</h3>
+<p id="fast">
+快速生成
+</p>
+
+</div>
+
+
+<div class="feature">
+
+<h3>🔒</h3>
+
+<p id="secure">
+安全可靠
+</p>
+
+</div>
+
+
+<div class="feature">
+
+<h3>🌎</h3>
+
+<p id="multi">
+多语言支持
+</p>
+
+</div>
+
+
+</div>
+
+
+
+
+</div>
+
+
+
+<footer>
+
+© 2026 UUID Generator Pro
+
+</footer>
+
+
+
+
 <script>
-// ========================
-// GRAIN COLLECTOR GAME
-// ========================
 
-const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
 
-// === CONSTANTS ===
-const GRAIN_TYPES = [
-  { emoji: '🌾', name: 'Wheat', points: 10, color: '#daa520' },
-  { emoji: '🌽', name: 'Corn', points: 20, color: '#ffcc00' },
-  { emoji: '🍚', name: 'Rice', points: 15, color: '#f5f5dc' },
-  { emoji: '🫘', name: 'Soybeans', points: 25, color: '#8fbc8f' }
-];
+let uuids="";
 
-const OBSTACLE_TYPES = [
-  { emoji: '🪨', name: 'Rock' },
-  { emoji: '💣', name: 'Rotten', color: '#4a0' },
-  { emoji: '🐦', name: 'Bird' },
-  { emoji: '🌪️', name: 'Whirlwind' }
-];
 
-const BONUS_TYPES = [
-  { emoji: '✨', name: 'Golden Wheat', effect: 'score5x', duration: 5000, color: '#ffd700', desc: '5x Score!' },
-  { emoji: '❄️', name: 'Time Freeze', effect: 'freeze', duration: 4000, color: '#00bfff', desc: 'Time Freeze!' },
-  { emoji: '🧲', name: 'Magnet', effect: 'magnet', duration: 6000, color: '#ff4500', desc: 'Magnet!' },
-  { emoji: '⚡', name: 'Speed Boost', effect: 'speed', duration: 5000, color: '#7fff00', desc: 'Speed Boost!' }
-];
 
-const COMBO_MULTIPLIERS = [1, 2, 3, 5];
+function generateUUID(){
 
-const ACHIEVEMENTS = [
-  { id: 'first', icon: '🌱', title: 'First Harvest', desc: 'Collect your first grain', check: s => s.totalGrains >= 1 },
-  { id: 'ten', icon: '🌿', title: 'Getting Started', desc: 'Collect 10 grains', check: s => s.totalGrains >= 10 },
-  { id: 'fifty', icon: '🌳', title: 'Seasoned Farmer', desc: 'Collect 50 grains', check: s => s.totalGrains >= 50 },
-  { id: 'combo3', icon: '🔥', title: 'On Fire!', desc: 'Reach 3x combo', check: s => s.maxCombo >= 3 },
-  { id: 'combo5', icon: '💥', title: 'UNSTOPPABLE!', desc: 'Reach 5x combo', check: s => s.maxCombo >= 5 },
-  { id: 'score500', icon: '⭐', title: 'Star Farmer', desc: 'Score 500 points', check: s => s.score >= 500 },
-  { id: 'score2000', icon: '🌟', title: 'Master Harvester', desc: 'Score 2000 points', check: s => s.score >= 2000 },
-  { id: 'survive60', icon: '⏰', title: 'Endurance', desc: 'Survive 60 seconds', check: s => s.survivalTime >= 60 },
-  { id: 'bonus', icon: '🎁', title: 'Power Up!', desc: 'Collect a bonus item', check: s => s.bonusCollected >= 1 },
-  { id: 'daily', icon: '📅', title: 'Daily Warrior', desc: 'Complete a daily challenge', check: s => s.dailyCompleted }
-];
 
-// === GAME STATE ===
-let W, H;
-let gameState = 'menu'; // menu, countdown, playing, paused, gameover
-let isMobile = false;
+let count=
+document.getElementById("count").value;
 
-const state = {
-  score: 0,
-  totalGrains: 0,
-  combo: 0,
-  comboTimer: 0,
-  maxCombo: 0,
-  survivalTime: 0,
-  bonusCollected: 0,
-  dailyCompleted: false,
-  activeEffects: {},
-  difficulty: 1,
-  dailyMode: false
+
+uuids="";
+
+
+for(let i=0;i<count;i++){
+
+uuids+=crypto.randomUUID()+"\n";
+
+}
+
+
+document.getElementById("result").innerText=uuids;
+
+
+}
+
+
+
+
+
+function copyUUID(){
+
+
+navigator.clipboard.writeText(uuids);
+
+
+alert("Copied!");
+
+}
+
+
+
+function downloadUUID(){
+
+
+let blob=
+new Blob(
+[uuids],
+{type:"text/plain"}
+);
+
+
+let url=
+URL.createObjectURL(blob);
+
+
+let a=document.createElement("a");
+
+a.href=url;
+
+a.download="uuid.txt";
+
+a.click();
+
+
+}
+
+
+
+
+
+const langData={
+
+
+zh:{
+
+title:"UUID Generator Pro",
+
+subtitle:"随机UUID生成器",
+
+number:"数量",
+
+generate:"生成UUID",
+
+copy:"复制",
+
+download:"下载TXT",
+
+fast:"快速生成",
+
+secure:"安全可靠",
+
+multi:"多语言支持"
+
+},
+
+
+tw:{
+
+title:"UUID Generator Pro",
+
+subtitle:"隨機UUID產生器",
+
+number:"數量",
+
+generate:"生成UUID",
+
+copy:"複製",
+
+download:"下載TXT",
+
+fast:"快速生成",
+
+secure:"安全可靠",
+
+multi:"多語言支援"
+
+},
+
+
+en:{
+
+title:"UUID Generator Pro",
+
+subtitle:"Random UUID Generator",
+
+number:"Quantity",
+
+generate:"Generate UUID",
+
+copy:"Copy",
+
+download:"Download TXT",
+
+fast:"Fast Generation",
+
+secure:"Secure",
+
+multi:"Multi Language"
+
+},
+
+
+jp:{
+
+title:"UUID Generator Pro",
+
+subtitle:"ランダムUUID生成ツール",
+
+number:"数量",
+
+generate:"UUID生成",
+
+copy:"コピー",
+
+download:"TXTダウンロード",
+
+fast:"高速生成",
+
+secure:"安全",
+
+multi:"多言語対応"
+
+},
+
+
+fr:{
+
+title:"UUID Generator Pro",
+
+subtitle:"Générateur UUID aléatoire",
+
+number:"Quantité",
+
+generate:"Générer UUID",
+
+copy:"Copier",
+
+download:"Télécharger TXT",
+
+fast:"Rapide",
+
+secure:"Sécurisé",
+
+multi:"Multilingue"
+
+},
+
+
+de:{
+
+title:"UUID Generator Pro",
+
+subtitle:"Zufälliger UUID Generator",
+
+number:"Anzahl",
+
+generate:"UUID erstellen",
+
+copy:"Kopieren",
+
+download:"TXT herunterladen",
+
+fast:"Schnell",
+
+secure:"Sicher",
+
+multi:"Mehrsprachig"
+
+},
+
+
+es:{
+
+title:"UUID Generator Pro",
+
+subtitle:"Generador UUID aleatorio",
+
+number:"Cantidad",
+
+generate:"Generar UUID",
+
+copy:"Copiar",
+
+download:"Descargar TXT",
+
+fast:"Rápido",
+
+secure:"Seguro",
+
+multi:"Multilingüe"
+
+},
+
+
+kr:{
+
+title:"UUID Generator Pro",
+
+subtitle:"랜덤 UUID 생성기",
+
+number:"수량",
+
+generate:"UUID 생성",
+
+copy:"복사",
+
+download:"TXT 다운로드",
+
+fast:"빠른 생성",
+
+secure:"안전",
+
+multi:"다국어"
+
+},
+
+
+ru:{
+
+title:"UUID Generator Pro",
+
+subtitle:"Генератор UUID",
+
+number:"Количество",
+
+generate:"Создать UUID",
+
+copy:"Копировать",
+
+download:"Скачать TXT",
+
+fast:"Быстро",
+
+secure:"Безопасно",
+
+multi:"Многоязычный"
+
+}
+
+
 };
 
-// Player
-const player = {
-  x: 0, y: 0,
-  w: 44, h: 44,
-  vx: 0, vy: 0,
-  speed: 5,
-  targetX: 0, targetY: 0,
-  bobTimer: 0,
-  invincible: 0,
-  trail: []
-};
 
-// Entity arrays
-let grains = [];
-let obstacles = [];
-let bonuses = [];
-let particles = [];
-let floatingTexts = [];
-let bgClouds = [];
-let bgLeaves = [];
-let bgWheatField = [];
 
-// Timers
-let grainSpawnTimer = 0;
-let obstacleSpawnTimer = 0;
-let bonusSpawnTimer = 0;
-let gameTime = 0;
-let shakeAmount = 0;
-let shakeDuration = 0;
+function changeLang(){
 
-// Input
-const keys = {};
-let touchJoystick = { active: false, dx: 0, dy: 0 };
-let touchId = null;
 
-// High scores
-let highScores = JSON.parse(localStorage.getItem('grainCollectorHS') || '[]');
-let unlockedAchievements = JSON.parse(localStorage.getItem('grainCollectorAch') || '[]');
+let l=
+document.getElementById("lang").value;
 
-// === RESIZE ===
-function resize() {
-  W = canvas.width = window.innerWidth;
-  H = canvas.height = window.innerHeight;
-  isMobile = W < 600 || 'ontouchstart' in window;
-  if (isMobile) {
-    document.getElementById('touchArea').style.display = 'block';
-  }
-}
-window.addEventListener('resize', resize);
-resize();
 
-// === INPUT HANDLERS ===
-window.addEventListener('keydown', e => {
-  keys[e.key] = true;
-  if (e.key === 'p' || e.key === 'P' || e.key === 'Escape') {
-    if (gameState === 'playing' || gameState === 'paused') Game.togglePause();
-  }
-});
-window.addEventListener('keyup', e => { keys[e.key] = false; });
+let d=
+langData[l];
 
-// Touch joystick
-const touchArea = document.getElementById('touchArea');
-const joystickBase = document.getElementById('joystickBase');
-const joystickThumb = document.getElementById('joystickThumb');
-const joystickContainer = document.getElementById('joystickContainer');
 
-function handleTouchStart(e) {
-  if (gameState !== 'playing') return;
-  const touch = e.changedTouches[0];
-  touchId = touch.identifier;
-  touchJoystick.active = true;
+document.getElementById("title").innerText=d.title;
 
-  // Position joystick at touch point
-  const x = touch.clientX;
-  const y = touch.clientY;
-  joystickContainer.style.left = (x - 60) + 'px';
-  joystickContainer.style.top = (y - 60) + 'px';
-  joystickContainer.style.transform = 'none';
-  joystickContainer.style.bottom = 'auto';
+document.getElementById("subtitle").innerText=d.subtitle;
+
+document.getElementById("numberText").innerText=d.number;
+
+document.getElementById("generate").innerText=d.generate;
+
+document.getElementById("copy").innerText=d.copy;
+
+document.getElementById("download").innerText=d.download;
+
+document.getElementById("fast").innerText=d.fast;
+
+document.getElementById("secure").innerText=d.secure;
+
+document.getElementById("multi").innerText=d.multi;
+
+
 }
 
-function handleTouchMove(e) {
-  e.preventDefault();
-  if (!touchJoystick.active) return;
-  for (let t of e.changedTouches) {
-    if (t.identifier === touchId) {
-      const rect = joystickBase.getBoundingClientRect();
-      const cx = rect.left + rect.width / 2;
-      const cy = rect.top + rect.height / 2;
-      let dx = t.clientX - cx;
-      let dy = t.clientY - cy;
-      const dist = Math.sqrt(dx*dx + dy*dy);
-      const maxDist = 50;
-      if (dist > maxDist) {
-        dx = (dx / dist) * maxDist;
-        dy = (dy / dist) * maxDist;
-      }
-      touchJoystick.dx = dx / maxDist;
-      touchJoystick.dy = dy / maxDist;
-      joystickThumb.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
-    }
-  }
-}
 
-function handleTouchEnd(e) {
-  for (let t of e.changedTouches) {
-    if (t.identifier === touchId) {
-      touchJoystick.active = false;
-      touchJoystick.dx = 0;
-      touchJoystick.dy = 0;
-      touchId = null;
-      joystickThumb.style.transform = 'translate(-50%, -50%)';
-      // Reset position
-      joystickContainer.style.left = '50%';
-      joystickContainer.style.transform = 'translateX(-50%)';
-      joystickContainer.style.bottom = '30px';
-      joystickContainer.style.top = 'auto';
-    }
-  }
-}
 
-touchArea.addEventListener('touchstart', handleTouchStart, { passive: false });
-touchArea.addEventListener('touchmove', handleTouchMove, { passive: false });
-touchArea.addEventListener('touchend', handleTouchEnd);
-touchArea.addEventListener('touchcancel', handleTouchEnd);
-
-// Also handle touches on canvas for mobile
-canvas.addEventListener('touchstart', (e) => {
-  if (gameState !== 'playing') return;
-  handleTouchStart(e);
-}, { passive: false });
-canvas.addEventListener('touchmove', (e) => {
-  handleTouchMove(e);
-}, { passive: false });
-canvas.addEventListener('touchend', handleTouchEnd);
-
-// === UTILITY FUNCTIONS ===
-function lerp(a, b, t) { return a + (b - a) * t; }
-function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
-function rand(a, b) { return Math.random() * (b - a) + a; }
-function randInt(a, b) { return Math.floor(rand(a, b + 1)); }
-function dist(x1, y1, x2, y2) { return Math.sqrt((x2-x1)**2 + (y2-y1)**2); }
-function easeOutBack(t) { const c1=1.70158; const c3=c1+1; return 1+c3*Math.pow(t-1,3)+c1*Math.pow(t-1,2); }
-function easeOutElastic(t) { const c4=(2*Math.PI)/3; return t===0?0:t===1?1:Math.pow(2,-10*t)*Math.sin((t*10-0.75)*c4)+1; }
-
-// === PARTICLE SYSTEM ===
-function spawnParticles(x, y, color, count = 8, spread = 3) {
-  for (let i = 0; i < count; i++) {
-    particles.push({
-      x, y,
-      vx: rand(-spread, spread),
-      vy: rand(-spread - 2, -1),
-      life: 1,
-      decay: rand(0.015, 0.035),
-      size: rand(2, 6),
-      color,
-      gravity: 0.1,
-      type: 'circle'
-    });
-  }
-}
-
-function spawnStarParticles(x, y, color, count = 5) {
-  for (let i = 0; i < count; i++) {
-    const angle = (Math.PI * 2 / count) * i + rand(-0.3, 0.3);
-    const speed = rand(2, 5);
-    particles.push({
-      x, y,
-      vx: Math.cos(angle) * speed,
-      vy: Math.sin(angle) * speed,
-      life: 1,
-      decay: rand(0.02, 0.04),
-      size: rand(3, 7),
-      color,
-      gravity: 0.05,
-      type: 'star',
-      rotation: rand(0, Math.PI * 2),
-      rotSpeed: rand(-0.1, 0.1)
-    });
-  }
-}
-
-function spawnTrailParticle(x, y) {
-  particles.push({
-    x: x + rand(-3, 3),
-    y: y + rand(-3, 3),
-    vx: rand(-0.5, 0.5),
-    vy: rand(-1, 0),
-    life: 0.6,
-    decay: 0.02,
-    size: rand(2, 4),
-    color: '#ffd700',
-    gravity: 0,
-    type: 'circle'
-  });
-}
-
-function spawnFloatingText(x, y, text, color = '#ffd700', size = 20) {
-  floatingTexts.push({
-    x, y,
-    text,
-    color,
-    size,
-    life: 1,
-    vy: -2,
-    scale: 0
-  });
-}
-
-// === SCREEN SHAKE ===
-function triggerShake(amount = 5, duration = 0.3) {
-  shakeAmount = amount;
-  shakeDuration = duration;
-}
-
-// === BACKGROUND SETUP ===
-function initBackground() {
-  bgClouds = [];
-  for (let i = 0; i < 6; i++) {
-    bgClouds.push({
-      x: rand(-100, W + 100),
-      y: rand(20, H * 0.35),
-      w: rand(80, 200),
-      h: rand(30, 60),
-      speed: rand(0.2, 0.6),
-      opacity: rand(0.3, 0.7)
-    });
-  }
-
-  bgLeaves = [];
-  for (let i = 0; i < 15; i++) {
-    bgLeaves.push({
-      x: rand(0, W),
-      y: rand(-H, H),
-      size: rand(6, 14),
-      speed: rand(0.5, 1.5),
-      sway: rand(0.5, 2),
-      swaySpeed: rand(0.01, 0.03),
-      swayOffset: rand(0, Math.PI * 2),
-      rotation: rand(0, Math.PI * 2),
-      rotSpeed: rand(-0.02, 0.02),
-      color: ['#c17817', '#d4a04a', '#8b4513', '#cd853f', '#b8860b'][randInt(0, 4)],
-      opacity: rand(0.3, 0.7)
-    });
-  }
-
-  bgWheatField = [];
-  const spacing = 24;
-  for (let x = 0; x < W + spacing; x += spacing) {
-    bgWheatField.push({
-      x,
-      height: rand(20, 50),
-      swayOffset: rand(0, Math.PI * 2),
-      color: ['#daa520', '#cd853f', '#d4a04a', '#c8a030'][randInt(0, 3)]
-    });
-  }
-}
-
-// === ENTITY SPAWNING ===
-function spawnGrain() {
-  const type = GRAIN_TYPES[randInt(0, GRAIN_TYPES.length - 1)];
-  const size = rand(28, 38);
-  grains.push({
-    x: rand(size, W - size),
-    y: -size,
-    w: size, h: size,
-    vy: rand(1.5, 2.5) * (1 + state.difficulty * 0.15),
-    vx: rand(-0.5, 0.5),
-    type,
-    rotation: 0,
-    rotSpeed: rand(-0.03, 0.03),
-    scale: 0,
-    spawnTime: performance.now(),
-    glow: 0
-  });
-}
-
-function spawnObstacle() {
-  const type = OBSTACLE_TYPES[randInt(0, OBSTACLE_TYPES.length - 1)];
-  const size = rand(30, 42);
-  obstacles.push({
-    x: rand(size, W - size),
-    y: -size,
-    w: size, h: size,
-    vy: rand(1.8, 3) * (1 + state.difficulty * 0.12),
-    vx: type.name === 'Bird' ? rand(-2, 2) : rand(-0.3, 0.3),
-    type,
-    rotation: 0,
-    rotSpeed: type.name === 'Whirlwind' ? 0.1 : rand(-0.02, 0.02),
-    wobble: 0,
-    wobbleSpeed: rand(0.03, 0.06)
-  });
-}
-
-function spawnBonus() {
-  const type = BONUS_TYPES[randInt(0, BONUS_TYPES.length - 1)];
-  bonuses.push({
-    x: rand(30, W - 30),
-    y: -30,
-    w: 34, h: 34,
-    vy: rand(1, 1.8),
-    type,
-    glow: 0,
-    glowDir: 1,
-    rotation: 0,
-    scale: 0,
-    spawnTime: performance.now()
-  });
-}
-
-// === PLAYER UPDATE ===
-function updatePlayer(dt) {
-  let dx = 0, dy = 0;
-  const speed = player.speed * (state.activeEffects.speed ? 1.6 : 1);
-
-  // Keyboard
-  if (keys['ArrowLeft'] || keys['a'] || keys['A']) dx -= 1;
-  if (keys['ArrowRight'] || keys['d'] || keys['D']) dx += 1;
-  if (keys['ArrowUp'] || keys['w'] || keys['W']) dy -= 1;
-  if (keys['ArrowDown'] || keys['s'] || keys['S']) dy += 1;
-
-  // Touch joystick
-  if (touchJoystick.active) {
-    dx += touchJoystick.dx;
-    dy += touchJoystick.dy;
-  }
-
-  // Normalize diagonal movement
-  const mag = Math.sqrt(dx*dx + dy*dy);
-  if (mag > 0) {
-    dx = (dx / mag) * speed;
-    dy = (dy / mag) * speed;
-  }
-
-  // Smooth movement
-  player.vx = lerp(player.vx, dx, 0.3);
-  player.vy = lerp(player.vy, dy, 0.3);
-
-  player.x += player.vx;
-  player.y += player.vy;
-
-  // Bounds
-  player.x = clamp(player.x, player.w / 2, W - player.w / 2);
-  player.y = clamp(player.y, player.h / 2 + 60, H - player.h / 2);
-
-  // Bob animation
-  player.bobTimer += dt * 5;
-
-  // Invincibility timer
-  if (player.invincible > 0) player.invincible -= dt;
-
-  // Trail particles
-  if (Math.abs(player.vx) > 0.5 || Math.abs(player.vy) > 0.5) {
-    if (Math.random() < 0.3) {
-      spawnTrailParticle(player.x, player.y + player.h / 2);
-    }
-  }
-}
-
-// === COLLISION ===
-function checkCollision(a, b) {
-  const margin = 6;
-  return Math.abs(a.x - b.x) < (a.w + b.w) / 2 - margin &&
-         Math.abs(a.y - b.y) < (a.h + b.h) / 2 - margin;
-}
-
-// === MAGNET EFFECT ===
-function applyMagnet(entity) {
-  if (state.activeEffects.magnet) {
-    const d = dist(player.x, player.y, entity.x, entity.y);
-    if (d < 150) {
-      const angle = Math.atan2(player.y - entity.y, player.x - entity.x);
-      const force = (150 - d) / 150 * 4;
-      entity.x += Math.cos(angle) * force;
-      entity.y += Math.sin(angle) * force;
-    }
-  }
-}
-
-// === UPDATE GAME ===
-function update(dt) {
-  // Always update background for visual appeal
-  updateBackground(dt);
-
-  if (gameState !== 'playing') return;
-
-  const freezeActive = state.activeEffects.freeze;
-  gameTime += dt;
-  state.survivalTime = gameTime;
-
-  // Difficulty ramp
-  state.difficulty = 1 + gameTime / 30;
-
-  // Combo timer
-  if (state.combo > 0) {
-    state.comboTimer -= dt;
-    if (state.comboTimer <= 0) {
-      state.combo = 0;
-      updateComboDisplay();
-    }
-  }
-
-  // Spawn timers
-  const spawnRate = Math.max(0.3, 1.2 - state.difficulty * 0.08);
-  grainSpawnTimer += dt;
-  if (grainSpawnTimer >= spawnRate) {
-    grainSpawnTimer = 0;
-    spawnGrain();
-    if (state.difficulty > 3 && Math.random() < 0.3) spawnGrain(); // Extra grains at higher difficulty
-  }
-
-  const obsRate = Math.max(0.8, 2.5 - state.difficulty * 0.15);
-  obstacleSpawnTimer += dt;
-  if (obstacleSpawnTimer >= obsRate) {
-    obstacleSpawnTimer = 0;
-    spawnObstacle();
-  }
-
-  bonusSpawnTimer += dt;
-  if (bonusSpawnTimer >= rand(8, 15)) {
-    bonusSpawnTimer = 0;
-    spawnBonus();
-  }
-
-  // Update player
-  updatePlayer(dt);
-
-  // Update grains
-  for (let i = grains.length - 1; i >= 0; i--) {
-    const g = grains[i];
-    const age = (performance.now() - g.spawnTime) / 300;
-    g.scale = Math.min(1, easeOutBack(Math.min(age, 1)));
-
-    if (!freezeActive) {
-      g.y += g.vy;
-      g.x += g.vx;
-    }
-    g.rotation += g.rotSpeed;
-    g.glow = 0.5 + Math.sin(performance.now() * 0.005 + i) * 0.3;
-
-    applyMagnet(g);
-
-    // Collision with player
-    if (checkCollision(player, g)) {
-      collectGrain(g);
-      grains.splice(i, 1);
-      continue;
-    }
-
-    // Off screen
-    if (g.y > H + 50) {
-      // Miss - reset combo
-      if (state.combo > 0) {
-        state.combo = Math.max(0, state.combo - 1);
-        updateComboDisplay();
-      }
-      grains.splice(i, 1);
-    }
-  }
-
-  // Update obstacles
-  for (let i = obstacles.length - 1; i >= 0; i--) {
-    const o = obstacles[i];
-    if (!freezeActive) {
-      o.y += o.vy;
-      o.x += o.vx;
-    }
-    o.rotation += o.rotSpeed;
-    o.wobble += o.wobbleSpeed;
-
-    // Bounce off walls for birds
-    if (o.type.name === 'Bird') {
-      if (o.x < 20 || o.x > W - 20) o.vx *= -1;
-    }
-
-    // Collision with player
-    if (player.invincible <= 0 && checkCollision(player, o)) {
-      hitObstacle(o);
-      obstacles.splice(i, 1);
-      continue;
-    }
-
-    if (o.y > H + 50) {
-      obstacles.splice(i, 1);
-    }
-  }
-
-  // Update bonuses
-  for (let i = bonuses.length - 1; i >= 0; i--) {
-    const b = bonuses[i];
-    const age = (performance.now() - b.spawnTime) / 300;
-    b.scale = Math.min(1, easeOutBack(Math.min(age, 1)));
-
-    if (!freezeActive) {
-      b.y += b.vy;
-    }
-    b.glow += 0.05 * b.glowDir;
-    if (b.glow > 1 || b.glow < 0) b.glowDir *= -1;
-    b.rotation += 0.02;
-
-    applyMagnet(b);
-
-    if (checkCollision(player, b)) {
-      collectBonus(b);
-      bonuses.splice(i, 1);
-      continue;
-    }
-
-    if (b.y > H + 50) {
-      bonuses.splice(i, 1);
-    }
-  }
-
-  // Update particles
-  for (let i = particles.length - 1; i >= 0; i--) {
-    const p = particles[i];
-    p.x += p.vx;
-    p.y += p.vy;
-    p.vy += p.gravity;
-    p.life -= p.decay;
-    if (p.rotation !== undefined) p.rotation += p.rotSpeed;
-    if (p.life <= 0) particles.splice(i, 1);
-  }
-
-  // Update floating texts
-  for (let i = floatingTexts.length - 1; i >= 0; i--) {
-    const t = floatingTexts[i];
-    t.y += t.vy;
-    t.life -= 0.015;
-    t.scale = Math.min(1, t.scale + 0.1);
-    if (t.life <= 0) floatingTexts.splice(i, 1);
-  }
-
-  // Update active effects
-  for (const key in state.activeEffects) {
-    if (state.activeEffects[key]) {
-      state.activeEffects[key] -= dt * 1000;
-      if (state.activeEffects[key] <= 0) {
-        delete state.activeEffects[key];
-      }
-    }
-  }
-
-  // Screen shake decay
-  if (shakeDuration > 0) {
-    shakeDuration -= dt;
-    if (shakeDuration <= 0) shakeAmount = 0;
-  }
-
-  // Update HUD
-  updateHUD();
-
-  // Check achievements
-  checkAchievements();
-}
-
-// === COLLECT GRAIN ===
-function collectGrain(grain) {
-  state.combo++;
-  state.comboTimer = 2.5;
-  if (state.combo > state.maxCombo) state.maxCombo = state.combo;
-
-  const comboIdx = Math.min(state.combo - 1, COMBO_MULTIPLIERS.length - 1);
-  const multiplier = COMBO_MULTIPLIERS[comboIdx];
-  const scoreMultiplier = state.activeEffects.score5x ? 5 : 1;
-  const points = grain.type.points * multiplier * scoreMultiplier;
-
-  state.score += points;
-  state.totalGrains++;
-
-  // Effects
-  spawnParticles(grain.x, grain.y, grain.type.color, 12, 4);
-  spawnStarParticles(grain.x, grain.y, '#ffd700', 4);
-
-  let txt = `+${points}`;
-  if (multiplier > 1) txt += ` x${multiplier}`;
-  spawnFloatingText(grain.x, grain.y - 15, txt, grain.type.color, multiplier > 1 ? 24 : 18);
-
-  updateComboDisplay();
-
-  // Combo milestone flash
-  if (state.combo === 5 || state.combo === 10 || state.combo === 20) {
-    triggerShake(3, 0.2);
-    spawnStarParticles(player.x, player.y, '#ff6b00', 12);
-    spawnFloatingText(player.x, player.y - 40, `🔥 ${state.combo} COMBO!`, '#ff4444', 28);
-  }
-}
-
-// === COLLECT BONUS ===
-function collectBonus(bonus) {
-  state.activeEffects[bonus.type.effect] = bonus.type.duration;
-  state.bonusCollected++;
-
-  spawnParticles(bonus.x, bonus.y, bonus.type.color, 20, 5);
-  spawnStarParticles(bonus.x, bonus.y, bonus.type.color, 8);
-  spawnFloatingText(bonus.x, bonus.y - 20, bonus.type.desc, bonus.type.color, 26);
-  triggerShake(4, 0.2);
-}
-
-// === HIT OBSTACLE ===
-let lives = 3;
-
-function hitObstacle(obs) {
-  triggerShake(8, 0.4);
-  state.combo = 0;
-  updateComboDisplay();
-
-  spawnParticles(player.x, player.y, '#ff4444', 15, 5);
-  spawnFloatingText(player.x, player.y - 20, '💥 OUCH!', '#ff4444', 24);
-
-  player.invincible = 1.5;
-  lives--;
-
-  if (lives <= 0) {
-    gameOver();
-  } else {
-    spawnFloatingText(player.x, player.y - 50, `❤️ ${lives} left`, '#ff6666', 18);
-  }
-}
-
-// === COMBO DISPLAY ===
-function updateComboDisplay() {
-  const el = document.getElementById('comboDisplay');
-  if (state.combo >= 2) {
-    const comboIdx = Math.min(state.combo - 1, COMBO_MULTIPLIERS.length - 1);
-    const mult = COMBO_MULTIPLIERS[comboIdx];
-    el.textContent = `🔥 COMBO x${mult}!`;
-    el.classList.add('visible');
-    el.classList.remove('pulse');
-    void el.offsetWidth;
-    el.classList.add('pulse');
-    el.style.color = mult >= 5 ? '#ff0000' : mult >= 3 ? '#ff6b00' : '#ffa500';
-  } else {
-    el.classList.remove('visible');
-  }
-}
-
-// === HUD ===
-function updateHUD() {
-  document.getElementById('hudScore').textContent = state.score;
-  document.getElementById('hudGrains').textContent = state.totalGrains;
-  document.getElementById('hudBest').textContent = getHighScore();
-}
-
-function getHighScore() {
-  return highScores.length > 0 ? highScores[0] : 0;
-}
-
-// === BACKGROUND ===
-function updateBackground(dt) {
-  // Clouds
-  for (const c of bgClouds) {
-    c.x += c.speed;
-    if (c.x > W + c.w) c.x = -c.w;
-  }
-
-  // Leaves
-  for (const l of bgLeaves) {
-    l.y += l.speed;
-    l.x += Math.sin(performance.now() * l.swaySpeed + l.swayOffset) * l.sway * 0.3;
-    l.rotation += l.rotSpeed;
-    if (l.y > H + 20) {
-      l.y = -20;
-      l.x = rand(0, W);
-    }
-  }
-}
-
-// === DRAW ===
-function draw() {
-  ctx.save();
-
-  // Screen shake
-  if (shakeDuration > 0) {
-    const sx = (Math.random() - 0.5) * shakeAmount * 2;
-    const sy = (Math.random() - 0.5) * shakeAmount * 2;
-    ctx.translate(sx, sy);
-  }
-
-  // Always draw background (menu, countdown, gameplay, etc.)
-  drawBackground();
-
-  if (gameState === 'playing' || gameState === 'paused' || gameState === 'gameover' || gameState === 'countdown') {
-    drawEntities();
-    drawPlayer();
-    drawParticles();
-    drawFloatingTexts();
-    drawActiveEffects();
-
-    if (gameState === 'playing' || gameState === 'paused') {
-      // Draw lives
-      ctx.font = '18px serif';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      const heartsStr = '❤️'.repeat(lives) + '🖤'.repeat(Math.max(0, 3 - lives));
-      ctx.fillText(heartsStr, 15, 55);
-
-      // Survival time
-      ctx.font = 'bold 12px Nunito, sans-serif';
-      ctx.fillStyle = '#ffe8b0';
-      ctx.textAlign = 'center';
-      ctx.fillText(`⏱ ${Math.floor(state.survivalTime)}s`, W / 2, 58);
-    }
-  }
-
-  ctx.restore();
-}
-
-function drawBackground() {
-  // Sky gradient
-  const skyGrad = ctx.createLinearGradient(0, 0, 0, H);
-  skyGrad.addColorStop(0, '#4a90d9');
-  skyGrad.addColorStop(0.3, '#7db8e8');
-  skyGrad.addColorStop(0.5, '#b0d4f1');
-  skyGrad.addColorStop(0.7, '#f5deb3');
-  skyGrad.addColorStop(1, '#daa520');
-  ctx.fillStyle = skyGrad;
-  ctx.fillRect(0, 0, W, H);
-
-  // Sun
-  const sunX = W * 0.85;
-  const sunY = H * 0.12;
-  const sunGlow = ctx.createRadialGradient(sunX, sunY, 10, sunX, sunY, 80);
-  sunGlow.addColorStop(0, 'rgba(255,223,100,0.9)');
-  sunGlow.addColorStop(0.5, 'rgba(255,200,50,0.3)');
-  sunGlow.addColorStop(1, 'rgba(255,200,50,0)');
-  ctx.fillStyle = sunGlow;
-  ctx.fillRect(sunX - 100, sunY - 100, 200, 200);
-
-  ctx.beginPath();
-  ctx.arc(sunX, sunY, 25, 0, Math.PI * 2);
-  ctx.fillStyle = '#ffe066';
-  ctx.fill();
-
-  // Clouds
-  for (const c of bgClouds) {
-    ctx.globalAlpha = c.opacity;
-    ctx.fillStyle = '#fff';
-    drawCloud(c.x, c.y, c.w, c.h);
-    ctx.globalAlpha = 1;
-  }
-
-  // Hills
-  ctx.fillStyle = '#8fbc3f';
-  ctx.beginPath();
-  ctx.moveTo(0, H * 0.7);
-  for (let x = 0; x <= W; x += 30) {
-    ctx.lineTo(x, H * 0.7 + Math.sin(x * 0.008) * 30 + Math.sin(x * 0.015) * 15);
-  }
-  ctx.lineTo(W, H);
-  ctx.lineTo(0, H);
-  ctx.closePath();
-  ctx.fill();
-
-  // Field
-  const fieldGrad = ctx.createLinearGradient(0, H * 0.65, 0, H);
-  fieldGrad.addColorStop(0, '#a0862c');
-  fieldGrad.addColorStop(0.3, '#c8a030');
-  fieldGrad.addColorStop(1, '#8b7320');
-  ctx.fillStyle = fieldGrad;
-  ctx.beginPath();
-  ctx.moveTo(0, H * 0.72);
-  for (let x = 0; x <= W; x += 20) {
-    ctx.lineTo(x, H * 0.72 + Math.sin(x * 0.01 + performance.now() * 0.0005) * 10);
-  }
-  ctx.lineTo(W, H);
-  ctx.lineTo(0, H);
-  ctx.closePath();
-  ctx.fill();
-
-  // Wheat field stalks at bottom
-  const t = performance.now() * 0.001;
-  for (const w of bgWheatField) {
-    const sway = Math.sin(t * 1.5 + w.swayOffset) * 8;
-    ctx.strokeStyle = w.color;
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    const baseY = H - 5;
-    ctx.moveTo(w.x, baseY);
-    ctx.quadraticCurveTo(w.x + sway * 0.5, baseY - w.height * 0.5, w.x + sway, baseY - w.height);
-    ctx.stroke();
-
-    // Wheat head
-    ctx.fillStyle = '#daa520';
-    ctx.beginPath();
-    ctx.ellipse(w.x + sway, baseY - w.height - 4, 3, 6, sway * 0.02, 0, Math.PI * 2);
-    ctx.fill();
-  }
-
-  // Falling leaves (parallax)
-  for (const l of bgLeaves) {
-    ctx.save();
-    ctx.translate(l.x, l.y);
-    ctx.rotate(l.rotation);
-    ctx.globalAlpha = l.opacity;
-    ctx.fillStyle = l.color;
-    // Leaf shape
-    ctx.beginPath();
-    ctx.ellipse(0, 0, l.size * 0.4, l.size, 0, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.restore();
-  }
-}
-
-function drawCloud(x, y, w, h) {
-  ctx.beginPath();
-  ctx.ellipse(x, y, w * 0.5, h * 0.6, 0, 0, Math.PI * 2);
-  ctx.ellipse(x - w * 0.25, y + h * 0.15, w * 0.35, h * 0.45, 0, 0, Math.PI * 2);
-  ctx.ellipse(x + w * 0.25, y + h * 0.1, w * 0.3, h * 0.5, 0, 0, Math.PI * 2);
-  ctx.fill();
-}
-
-function drawEntities() {
-  // Draw grains
-  for (const g of grains) {
-    ctx.save();
-    ctx.translate(g.x, g.y);
-    ctx.rotate(g.rotation);
-    ctx.scale(g.scale, g.scale);
-
-    // Glow
-    ctx.shadowColor = g.type.color;
-    ctx.shadowBlur = 10 + g.glow * 8;
-
-    ctx.font = `${g.w}px serif`;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(g.type.emoji, 0, 0);
-
-    ctx.shadowBlur = 0;
-    ctx.restore();
-  }
-
-  // Draw obstacles
-  for (const o of obstacles) {
-    ctx.save();
-    ctx.translate(o.x, o.y);
-    ctx.rotate(o.rotation);
-
-    // Warning red glow
-    ctx.shadowColor = '#ff0000';
-    ctx.shadowBlur = 8;
-
-    const wobbleScale = 1 + Math.sin(o.wobble) * 0.05;
-    ctx.scale(wobbleScale, wobbleScale);
-
-    ctx.font = `${o.w}px serif`;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(o.type.emoji, 0, 0);
-
-    ctx.shadowBlur = 0;
-    ctx.restore();
-  }
-
-  // Draw bonuses
-  for (const b of bonuses) {
-    ctx.save();
-    ctx.translate(b.x, b.y);
-    ctx.rotate(b.rotation);
-    ctx.scale(b.scale, b.scale);
-
-    // Rainbow glow
-    ctx.shadowColor = b.type.color;
-    ctx.shadowBlur = 15 + b.glow * 15;
-
-    ctx.font = `${b.w}px serif`;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(b.type.emoji, 0, 0);
-
-    ctx.shadowBlur = 0;
-    ctx.restore();
-  }
-}
-
-function drawPlayer() {
-  ctx.save();
-  ctx.translate(player.x, player.y);
-
-  // Invincibility flash
-  if (player.invincible > 0 && Math.floor(player.invincible * 10) % 2 === 0) {
-    ctx.globalAlpha = 0.5;
-  }
-
-  // Bob animation
-  const bob = Math.sin(player.bobTimer) * 3;
-
-  // Shadow
-  ctx.fillStyle = 'rgba(0,0,0,0.15)';
-  ctx.beginPath();
-  ctx.ellipse(0, player.h / 2 + 5, player.w / 2, 6, 0, 0, Math.PI * 2);
-  ctx.fill();
-
-  // Glow when power-up active
-  if (Object.keys(state.activeEffects).length > 0) {
-    ctx.shadowColor = '#ffd700';
-    ctx.shadowBlur = 20;
-  }
-
-  // Draw farmer emoji (basket)
-  ctx.font = `${player.w + 4}px serif`;
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText('🧺', 0, bob);
-
-  // Hat on top
-  ctx.font = `${20}px serif`;
-  ctx.fillText('👒', 0, bob - 22);
-
-  ctx.shadowBlur = 0;
-  ctx.restore();
-}
-
-function drawParticles() {
-  for (const p of particles) {
-    ctx.save();
-    ctx.globalAlpha = p.life;
-    ctx.translate(p.x, p.y);
-
-    if (p.type === 'star') {
-      ctx.rotate(p.rotation || 0);
-      ctx.fillStyle = p.color;
-      drawStar(0, 0, p.size * 0.4, p.size, 5);
-    } else {
-      ctx.fillStyle = p.color;
-      ctx.beginPath();
-      ctx.arc(0, 0, p.size * p.life, 0, Math.PI * 2);
-      ctx.fill();
-    }
-    ctx.restore();
-  }
-}
-
-function drawStar(cx, cy, innerR, outerR, points) {
-  ctx.beginPath();
-  for (let i = 0; i < points * 2; i++) {
-    const r = i % 2 === 0 ? outerR : innerR;
-    const angle = (Math.PI * 2 * i) / (points * 2) - Math.PI / 2;
-    const x = cx + Math.cos(angle) * r;
-    const y = cy + Math.sin(angle) * r;
-    if (i === 0) ctx.moveTo(x, y);
-    else ctx.lineTo(x, y);
-  }
-  ctx.closePath();
-  ctx.fill();
-}
-
-function drawFloatingTexts() {
-  for (const t of floatingTexts) {
-    ctx.save();
-    ctx.globalAlpha = t.life;
-    ctx.translate(t.x, t.y);
-
-    const s = easeOutBack(Math.min(t.scale, 1));
-    ctx.scale(s, s);
-
-    ctx.font = `bold ${t.size}px 'Fredoka One', sans-serif`;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-
-    // Outline
-    ctx.strokeStyle = 'rgba(0,0,0,0.5)';
-    ctx.lineWidth = 3;
-    ctx.strokeText(t.text, 0, 0);
-
-    ctx.fillStyle = t.color;
-    ctx.fillText(t.text, 0, 0);
-    ctx.restore();
-  }
-}
-
-function drawActiveEffects() {
-  let y = 110;
-  ctx.save();
-  for (const key in state.activeEffects) {
-    const remaining = state.activeEffects[key] / 1000;
-    const bonus = BONUS_TYPES.find(b => b.effect === key);
-    if (!bonus) continue;
-
-    ctx.globalAlpha = 0.9;
-    ctx.fillStyle = 'rgba(0,0,0,0.4)';
-    roundRect(ctx, 10, y, 130, 24, 6, true, false);
-
-    ctx.font = '13px Nunito, sans-serif';
-    ctx.fillStyle = bonus.color;
-    ctx.textAlign = 'left';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(`${bonus.emoji} ${bonus.name} ${remaining.toFixed(1)}s`, 16, y + 12);
-
-    y += 28;
-  }
-  ctx.restore();
-}
-
-function roundRect(ctx, x, y, w, h, r, fill, stroke) {
-  ctx.beginPath();
-  ctx.moveTo(x + r, y);
-  ctx.arcTo(x + w, y, x + w, y + h, r);
-  ctx.arcTo(x + w, y + h, x, y + h, r);
-  ctx.arcTo(x, y + h, x, y, r);
-  ctx.arcTo(x, y, x + w, y, r);
-  ctx.closePath();
-  if (fill) ctx.fill();
-  if (stroke) ctx.stroke();
-}
-
-// === ACHIEVEMENTS ===
-function checkAchievements() {
-  for (const ach of ACHIEVEMENTS) {
-    if (unlockedAchievements.includes(ach.id)) continue;
-    if (ach.check(state)) {
-      unlockedAchievements.push(ach.id);
-      localStorage.setItem('grainCollectorAch', JSON.stringify(unlockedAchievements));
-      showAchievementToast(ach);
-    }
-  }
-}
-
-function showAchievementToast(ach) {
-  const toast = document.getElementById('achievementToast');
-  document.getElementById('achIcon').textContent = ach.icon;
-  document.getElementById('achTitle').textContent = ach.title;
-  document.getElementById('achDesc').textContent = ach.desc;
-  toast.classList.add('show');
-  setTimeout(() => toast.classList.remove('show'), 3000);
-}
-
-// === GAME OVER ===
-function gameOver() {
-  gameState = 'gameover';
-
-  // Save score
-  highScores.push(state.score);
-  highScores.sort((a, b) => b - a);
-  highScores = highScores.slice(0, 10);
-  localStorage.setItem('grainCollectorHS', JSON.stringify(highScores));
-
-  // Update UI
-  document.getElementById('goScore').textContent = state.score;
-  document.getElementById('goGrains').textContent = state.totalGrains;
-  document.getElementById('goCombo').textContent = `x${COMBO_MULTIPLIERS[Math.min(state.maxCombo - 1, COMBO_MULTIPLIERS.length - 1)] || 1}`;
-  document.getElementById('goTime').textContent = `${Math.floor(state.survivalTime)}s`;
-  document.getElementById('goHigh').textContent = highScores[0];
-
-  const isNewHigh = state.score === highScores[0] && state.score > 0;
-  document.getElementById('newHighLabel').style.display = isNewHigh ? 'block' : 'none';
-
-  document.getElementById('gameOverScreen').classList.add('active');
-  document.getElementById('hud').classList.remove('visible');
-  document.getElementById('pauseBtn').classList.remove('visible');
-
-  if (state.dailyMode) {
-    state.dailyCompleted = true;
-    checkAchievements();
-  }
-}
-
-// Lives are declared in hitObstacle section above
-
-// === GAME LOOP ===
-let lastTime = 0;
-
-function gameLoop(timestamp) {
-  const dt = Math.min((timestamp - lastTime) / 1000, 0.05);
-  lastTime = timestamp;
-
-  update(dt);
-  draw();
-
-  requestAnimationFrame(gameLoop);
-}
-
-// === GAME CONTROLLER ===
-const Game = {
-  startGame() {
-    this.hideAllScreens();
-    this.resetState();
-    gameState = 'countdown';
-    this.showCountdown(() => {
-      gameState = 'playing';
-      document.getElementById('hud').classList.add('visible');
-      document.getElementById('pauseBtn').classList.add('visible');
-    });
-  },
-
-  startDailyChallenge() {
-    state.dailyMode = true;
-    this.startGame();
-  },
-
-  resetState() {
-    state.score = 0;
-    state.totalGrains = 0;
-    state.combo = 0;
-    state.comboTimer = 0;
-    state.maxCombo = 0;
-    state.survivalTime = 0;
-    state.bonusCollected = 0;
-    state.dailyCompleted = false;
-    state.activeEffects = {};
-    state.difficulty = 1;
-    state.dailyMode = false;
-
-    lives = 3;
-    gameTime = 0;
-    grainSpawnTimer = 0;
-    obstacleSpawnTimer = 0;
-    bonusSpawnTimer = 0;
-    shakeAmount = 0;
-    shakeDuration = 0;
-
-    grains = [];
-    obstacles = [];
-    bonuses = [];
-    particles = [];
-    floatingTexts = [];
-
-    player.x = W / 2;
-    player.y = H - 100;
-    player.vx = 0;
-    player.vy = 0;
-    player.invincible = 0;
-
-    initBackground();
-    updateComboDisplay();
-  },
-
-  showCountdown(callback) {
-    const countdownEl = document.getElementById('countdown');
-    const numEl = document.getElementById('countdownNum');
-    countdownEl.classList.add('active');
-
-    let count = 3;
-    numEl.textContent = count;
-    numEl.style.animation = 'none';
-    void numEl.offsetWidth;
-    numEl.style.animation = 'countPop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-
-    const interval = setInterval(() => {
-      count--;
-      if (count > 0) {
-        numEl.textContent = count;
-        numEl.style.animation = 'none';
-        void numEl.offsetWidth;
-        numEl.style.animation = 'countPop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-      } else if (count === 0) {
-        numEl.textContent = 'GO!';
-        numEl.style.color = '#7fff00';
-        numEl.style.animation = 'none';
-        void numEl.offsetWidth;
-        numEl.style.animation = 'countPop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-      } else {
-        clearInterval(interval);
-        countdownEl.classList.remove('active');
-        numEl.style.color = '#ffd700';
-        callback();
-      }
-    }, 800);
-  },
-
-  togglePause() {
-    if (gameState === 'playing') {
-      gameState = 'paused';
-      document.getElementById('pauseScreen').classList.add('active');
-      document.getElementById('pauseBtn').innerHTML = '▶️';
-    } else if (gameState === 'paused') {
-      gameState = 'playing';
-      document.getElementById('pauseScreen').classList.remove('active');
-      document.getElementById('pauseBtn').innerHTML = '⏸';
-    }
-  },
-
-  restartGame() {
-    this.hideAllScreens();
-    this.startGame();
-  },
-
-  quitToMenu() {
-    this.hideAllScreens();
-    gameState = 'menu';
-    document.getElementById('startScreen').classList.add('active');
-    document.getElementById('hud').classList.remove('visible');
-    document.getElementById('pauseBtn').classList.remove('visible');
-    initBackground();
-  },
-
-  showHighScores() {
-    this.hideAllScreens();
-    const list = document.getElementById('highScoreList');
-    list.innerHTML = '';
-    if (highScores.length === 0) {
-      list.innerHTML = '<div style="color:#ffe8b0;opacity:0.5;text-align:center;padding:20px;">No scores yet. Play a game!</div>';
-    } else {
-      highScores.forEach((s, i) => {
-        const medals = ['🥇', '🥈', '🥉'];
-        const medal = i < 3 ? medals[i] : `${i + 1}.`;
-        const entry = document.createElement('div');
-        entry.className = 'hs-entry';
-        entry.innerHTML = `<span class="hs-rank">${medal}</span><span class="hs-score">${s}</span>`;
-        list.appendChild(entry);
-      });
-    }
-    document.getElementById('highScoreScreen').classList.add('active');
-  },
-
-  hideAllScreens() {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  }
-};
-
-// === INIT ===
-function init() {
-  resize();
-  initBackground();
-
-  player.x = W / 2;
-  player.y = H - 100;
-
-  document.getElementById('hudBest').textContent = getHighScore();
-
-  // Start loop
-  requestAnimationFrame(gameLoop);
-
-  // Background animation even on menu
-  // We'll draw background in all states
-}
-
-init();
 </script>
+
+
+
 </body>
 </html>
