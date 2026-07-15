@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Free, fast and private UUID generator. Generate UUID v4 and time-ordered UUID v7 in bulk, validate, copy and download locally in your browser.">
+  <meta name="keywords" content="UUID generator, UUID v4, UUID v7, GUID generator, random UUID, online developer tools">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#6c5ce7">
+  <meta property="og:title" content="UUID Generator Pro">
+  <meta property="og:description" content="Generate secure UUID v4 and UUID v7 identifiers instantly in your browser.">
+  <meta property="og:type" content="website">
+  <title>UUID Generator Pro — Free Online UUID v4 & v7 Generator</title>
+
+  <!-- Google AdSense 网站所有权验证代码：按用户提供的截图放置在 head 内 -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1794897684778209"
+     crossorigin="anonymous"></script>
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%236c5ce7'/%3E%3Cpath d='M21 15h-5v34h5M43 15h5v34h-5M27 25h10v14H27z' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <style>
+    :root {
+      --bg: #f7f8fc;
+      --surface: rgba(255,255,255,.92);
+      --surface-solid: #ffffff;
+      --surface-2: #f1f2f8;
+      --text: #171728;
+      --muted: #69697a;
+      --faint: #9292a4;
+      --line: #e5e5ee;
+      --primary: #6c5ce7;
+      --primary-2: #5848d5;
+      --primary-soft: #efedff;
+      --success: #15805f;
+      --success-soft: #e7f8f1;
+      --danger: #c2415b;
+      --danger-soft: #fff0f3;
+      --shadow: 0 18px 60px rgba(28, 24, 70, .08);
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-md: 12px;
+    }
+    [data-theme="dark"] {
+      --bg: #0d0d16;
+      --surface: rgba(25,25,39,.9);
+      --surface-solid: #191927;
+      --surface-2: #222234;
+      --text: #f4f3fb;
+      --muted: #aaa8bd;
+      --faint: #7f7d93;
+      --line: #303047;
+      --primary: #8b7cf6;
+      --primary-2: #a79cff;
+      --primary-soft: #292349;
+      --success: #5ad6aa;
+      --success-soft: #183a32;
+      --danger: #ff8298;
+      --danger-soft: #43242e;
+      --shadow: 0 22px 70px rgba(0,0,0,.25);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 8% 3%, rgba(108,92,231,.12), transparent 29rem),
+        radial-gradient(circle at 92% 24%, rgba(46,196,182,.08), transparent 25rem),
+        var(--bg);
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", "Noto Sans SC", "Noto Sans JP", Arial, sans-serif;
+      line-height: 1.55;
+      transition: background-color .25s, color .25s;
+    }
+    button, input, select { font: inherit; }
+    button { color: inherit; }
+    a { color: inherit; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    .wrap { width: min(1160px, calc(100% - 40px)); margin: 0 auto; }
+    .header {
+      position: sticky; top: 0; z-index: 50;
+      background: color-mix(in srgb, var(--bg) 82%, transparent);
+      border-bottom: 1px solid color-mix(in srgb, var(--line) 76%, transparent);
+      backdrop-filter: blur(18px);
+    }
+    .nav { min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .brand { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; font-weight: 780; letter-spacing: -.025em; }
+    .brand-mark {
+      width: 38px; height: 38px; display: grid; place-items: center; color: white;
+      background: linear-gradient(145deg, #7c6cf0, #5848cf); border-radius: 11px;
+      box-shadow: 0 9px 20px rgba(108,92,231,.26); font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+    .brand-mark span { transform: translateY(-1px); }
+    .brand small { display: block; color: var(--muted); font-size: 10px; font-weight: 700; letter-spacing: .15em; line-height: 1; margin-top: 2px; }
+    .nav-actions { display: flex; align-items: center; gap: 9px; }
+    .select-wrap { position: relative; }
+    .language-select {
+      height: 40px; max-width: 155px; appearance: none; cursor: pointer; color: var(--text);
+      background: var(--surface-solid); border: 1px solid var(--line); border-radius: 11px;
+      padding: 0 34px 0 13px; outline: none;
+    }
+    .select-wrap::after { content: "⌄"; position: absolute; right: 12px; top: 7px; pointer-events: none; color: var(--muted); }
+    .icon-btn {
+      width: 40px; height: 40px; display: grid; place-items: center; cursor: pointer;
+      background: var(--surface-solid); border: 1px solid var(--line); border-radius: 11px;
+      transition: transform .16s, border-color .16s, background .16s;
+    }
+    .icon-btn:hover { transform: translateY(-1px); border-color: var(--primary); }
+    .icon-btn svg { width: 18px; height: 18px; }
+    .hero { text-align: center; padding: 78px 0 42px; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px; margin-bottom: 16px; padding: 7px 12px;
+      color: var(--primary-2); background: var(--primary-soft); border: 1px solid color-mix(in srgb, var(--primary) 20%, transparent);
+      border-radius: 999px; font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase;
+    }
+    .eyebrow::before { content: ""; width: 7px; height: 7px; background: #2ecc9a; border-radius: 50%; box-shadow: 0 0 0 4px rgba(46,204,154,.14); }
+    h1 { margin: 0; font-size: clamp(38px, 5.7vw, 68px); line-height: 1.06; letter-spacing: -.055em; }
+    .gradient-text { background: linear-gradient(105deg, var(--primary), #9b59d0 48%, #2aaea4); color: transparent; -webkit-background-clip: text; background-clip: text; }
+    .hero p { max-width: 690px; margin: 20px auto 0; color: var(--muted); font-size: clamp(16px, 2vw, 19px); }
+    .trust-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 22px; margin-top: 25px; color: var(--muted); font-size: 13px; }
+    .trust-row span { display: flex; align-items: center; gap: 7px; }
+    .trust-row svg { width: 16px; height: 16px; color: var(--success); }
+    .tool-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-xl); box-shadow: var(--shadow); overflow: hidden; backdrop-filter: blur(14px); }
+    .tool-top { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 24px; padding: 25px 27px; border-bottom: 1px solid var(--line); }
+    .tool-heading h2 { margin: 0 0 4px; font-size: 18px; letter-spacing: -.02em; }
+    .tool-heading p { margin: 0; color: var(--muted); font-size: 13px; }
+    .version-tabs { display: flex; gap: 4px; background: var(--surface-2); border-radius: 12px; padding: 4px; }
+    .tab { min-width: 72px; border: 0; border-radius: 9px; padding: 8px 15px; background: transparent; color: var(--muted); cursor: pointer; font-weight: 750; }
+    .tab.active { color: var(--primary-2); background: var(--surface-solid); box-shadow: 0 3px 12px rgba(27,23,64,.09); }
+    .controls { display: grid; grid-template-columns: 1.1fr 1fr; gap: 26px; padding: 25px 27px; border-bottom: 1px solid var(--line); }
+    .control-title { display: block; margin-bottom: 11px; font-size: 12px; color: var(--muted); font-weight: 780; text-transform: uppercase; letter-spacing: .07em; }
+    .quantity-row { display: grid; grid-template-columns: 1fr 84px; gap: 12px; align-items: center; }
+    input[type="range"] { width: 100%; accent-color: var(--primary); cursor: pointer; }
+    .number-input, .validator-input {
+      width: 100%; border: 1px solid var(--line); background: var(--surface-solid); color: var(--text); border-radius: 11px; outline: none;
+    }
+    .number-input { height: 42px; padding: 0 10px; text-align: center; font-weight: 700; }
+    .number-input:focus, .validator-input:focus, .language-select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 15%, transparent); }
+    .toggles { display: flex; align-items: center; flex-wrap: wrap; gap: 12px 20px; min-height: 42px; }
+    .switch-label { display: inline-flex; align-items: center; gap: 9px; color: var(--muted); font-size: 13px; cursor: pointer; user-select: none; }
+    .switch-label input { position: absolute; opacity: 0; pointer-events: none; }
+    .switch { width: 36px; height: 20px; padding: 2px; background: var(--line); border-radius: 999px; transition: background .2s; }
+    .switch::after { content: ""; display: block; width: 16px; height: 16px; background: white; border-radius: 50%; box-shadow: 0 1px 4px rgba(0,0,0,.22); transition: transform .2s; }
+    .switch-label input:checked + .switch { background: var(--primary); }
+    .switch-label input:checked + .switch::after { transform: translateX(16px); }
+    [dir="rtl"] .switch-label input:checked + .switch::after { transform: translateX(-16px); }
+    .action-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 18px 27px; background: color-mix(in srgb, var(--surface-2) 53%, transparent); }
+    .btn { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 0 17px; border-radius: 11px; border: 1px solid var(--line); background: var(--surface-solid); cursor: pointer; font-weight: 740; transition: transform .16s, box-shadow .16s, border-color .16s; }
+    .btn:hover { transform: translateY(-1px); border-color: color-mix(in srgb, var(--primary) 50%, var(--line)); }
+    .btn svg { width: 17px; height: 17px; }
+    .btn-primary { min-width: 158px; color: #fff; background: linear-gradient(135deg, #7768ed, #5c4bd7); border-color: transparent; box-shadow: 0 9px 20px rgba(108,92,231,.22); }
+    .btn-primary:hover { box-shadow: 0 12px 25px rgba(108,92,231,.3); border-color: transparent; }
+    .btn-danger { color: var(--danger); }
+    .spacer { flex: 1; }
+    .shortcut { color: var(--faint); font-size: 11px; }
+    .output { padding: 13px 16px 16px; }
+    .output-head { min-height: 38px; padding: 0 9px; display: flex; align-items: center; justify-content: space-between; color: var(--muted); font-size: 12px; }
+    .result-count { font-weight: 750; }
+    .uuid-list { display: grid; gap: 8px; max-height: 420px; overflow: auto; padding: 2px; }
+    .uuid-row {
+      display: grid; grid-template-columns: 34px 1fr 39px; align-items: center; gap: 10px; min-height: 53px; padding: 5px 7px 5px 12px;
+      border: 1px solid var(--line); border-radius: 12px; background: var(--surface-solid); animation: rowIn .25s ease both;
+    }
+    @keyframes rowIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
+    .row-index { color: var(--faint); font: 600 11px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .uuid-value { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 650 clamp(12px, 1.8vw, 15px)/1.4 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; letter-spacing: .01em; }
+    .copy-one { border: 0; border-radius: 9px; width: 36px; height: 36px; display: grid; place-items: center; cursor: pointer; color: var(--muted); background: transparent; }
+    .copy-one:hover { color: var(--primary-2); background: var(--primary-soft); }
+    .copy-one svg { width: 16px; height: 16px; }
+    .ad-space { margin: 28px auto; min-height: 82px; display: grid; place-items: center; color: var(--faint); border: 1px dashed var(--line); border-radius: 16px; background: color-mix(in srgb, var(--surface-solid) 70%, transparent); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; }
+    .validator { margin-top: 28px; padding: 26px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-lg); box-shadow: 0 10px 40px rgba(29,25,72,.05); }
+    .section-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
+    .section-head h2 { margin: 0 0 5px; font-size: 21px; letter-spacing: -.025em; }
+    .section-head p { margin: 0; color: var(--muted); font-size: 14px; }
+    .validator-row { display: grid; grid-template-columns: 1fr auto; gap: 10px; margin-top: 18px; }
+    .validator-input { min-height: 48px; padding: 0 15px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .validation-result { display: none; align-items: center; gap: 9px; margin-top: 12px; padding: 11px 13px; border-radius: 10px; font-size: 13px; font-weight: 680; }
+    .validation-result.show { display: flex; }
+    .validation-result.valid { color: var(--success); background: var(--success-soft); }
+    .validation-result.invalid { color: var(--danger); background: var(--danger-soft); }
+    .info-section { padding: 84px 0 35px; }
+    .info-intro { max-width: 690px; }
+    .info-intro .mini { color: var(--primary-2); font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+    .info-intro h2 { margin: 10px 0 12px; font-size: clamp(28px, 4vw, 42px); line-height: 1.13; letter-spacing: -.04em; }
+    .info-intro p { color: var(--muted); margin: 0; }
+    .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 17px; margin-top: 30px; }
+    .feature { padding: 24px; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--surface); }
+    .feature-icon { width: 42px; height: 42px; display: grid; place-items: center; margin-bottom: 16px; color: var(--primary-2); background: var(--primary-soft); border-radius: 12px; }
+    .feature-icon svg { width: 20px; height: 20px; }
+    .feature h3 { margin: 0 0 7px; font-size: 16px; }
+    .feature p { margin: 0; color: var(--muted); font-size: 13px; }
+    .faq { padding: 55px 0 80px; }
+    .faq h2 { margin: 0 0 24px; text-align: center; font-size: 30px; letter-spacing: -.035em; }
+    .faq-list { max-width: 800px; margin: 0 auto; border-top: 1px solid var(--line); }
+    details { border-bottom: 1px solid var(--line); }
+    summary { position: relative; padding: 20px 36px 20px 3px; cursor: pointer; list-style: none; font-weight: 720; }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: "+"; position: absolute; right: 7px; top: 17px; color: var(--primary-2); font-size: 22px; font-weight: 400; }
+    details[open] summary::after { content: "−"; }
+    details p { margin: -5px 40px 20px 3px; color: var(--muted); font-size: 14px; }
+    [dir="rtl"] summary { padding-right: 3px; padding-left: 36px; }
+    [dir="rtl"] summary::after { right: auto; left: 7px; }
+    .footer { border-top: 1px solid var(--line); padding: 28px 0 34px; color: var(--muted); font-size: 12px; }
+    .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+    .privacy-note { display: flex; align-items: center; gap: 7px; }
+    .privacy-note svg { width: 15px; height: 15px; color: var(--success); }
+    .toast { position: fixed; z-index: 100; left: 50%; bottom: 28px; transform: translate(-50%, 18px); padding: 11px 16px; color: white; background: #20202d; border-radius: 10px; box-shadow: 0 14px 35px rgba(0,0,0,.25); opacity: 0; pointer-events: none; font-size: 13px; font-weight: 700; transition: opacity .22s, transform .22s; }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+    @media (max-width: 760px) {
+      .wrap { width: min(100% - 24px, 1160px); }
+      .nav { min-height: 64px; }
+      .brand small { display: none; }
+      .brand-text { display: none; }
+      .language-select { max-width: 134px; }
+      .hero { padding: 56px 0 32px; }
+      .tool-top { grid-template-columns: 1fr; gap: 15px; padding: 21px 18px; }
+      .version-tabs { width: 100%; }
+      .tab { flex: 1; }
+      .controls { grid-template-columns: 1fr; gap: 20px; padding: 21px 18px; }
+      .action-bar { padding: 15px 18px; }
+      .btn-primary { flex: 1 1 100%; }
+      .shortcut { display: none; }
+      .output { padding: 10px; }
+      .uuid-row { grid-template-columns: 25px minmax(0,1fr) 36px; gap: 5px; padding-left: 7px; }
+      .validator { padding: 20px 16px; }
+      .validator-row { grid-template-columns: 1fr; }
+      .features { grid-template-columns: 1fr; }
+      .info-section { padding-top: 62px; }
+      .footer-inner { flex-direction: column; align-items: flex-start; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation: none !important; transition: none !important; } }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="wrap nav">
+      <a class="brand" href="#top" aria-label="UUID Generator Pro">
+        <span class="brand-mark"><span>{ }</span></span>
+        <span class="brand-text">UUID Generator<small>DEVELOPER TOOLS</small></span>
+      </a>
+      <div class="nav-actions">
+        <div class="select-wrap">
+          <label for="language" class="sr-only">Language</label>
+          <select id="language" class="language-select" aria-label="Language">
+            <option value="zh-CN">简体中文</option><option value="zh-TW">繁體中文</option><option value="en">English</option>
+            <option value="ja">日本語</option><option value="fr">Français</option><option value="de">Deutsch</option>
+            <option value="es">Español</option><option value="pt">Português</option><option value="ko">한국어</option>
+            <option value="it">Italiano</option><option value="ru">Русский</option><option value="ar">العربية</option>
+          </select>
+        </div>
+        <button id="themeBtn" class="icon-btn" aria-label="Toggle theme" title="Toggle theme">
+          <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.7 6.7 0 0 0 9.8 9.8Z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero wrap">
+      <div class="eyebrow" data-i18n="badge">快速 · 安全 · 本地运行</div>
+      <h1><span data-i18n="heroA">即时生成</span><br><span class="gradient-text" data-i18n="heroB">可靠的 UUID</span></h1>
+      <p data-i18n="heroDesc">免费生成符合标准的 UUID v4 和时间有序 UUID v7。无需注册，数据不会离开您的浏览器。</p>
+      <div class="trust-row">
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg><span data-i18n="trust1">密码学安全随机数</span></span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg><span data-i18n="trust2">支持批量生成</span></span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg><span data-i18n="trust3">完全免费</span></span>
+      </div>
+    </section>
+
+    <section class="wrap" aria-labelledby="generatorTitle">
+      <div class="tool-card">
+        <div class="tool-top">
+          <div class="tool-heading"><h2 id="generatorTitle" data-i18n="generatorTitle">UUID 生成器</h2><p id="versionDesc" data-i18n="v4Desc">基于随机数的通用唯一标识符</p></div>
+          <div class="version-tabs" role="tablist" aria-label="UUID version">
+            <button class="tab active" data-version="4" role="tab" aria-selected="true">UUID v4</button>
+            <button class="tab" data-version="7" role="tab" aria-selected="false">UUID v7</button>
+          </div>
+        </div>
+        <div class="controls">
+          <div>
+            <label class="control-title" for="quantity" data-i18n="quantity">生成数量</label>
+            <div class="quantity-row"><input type="range" id="quantityRange" min="1" max="100" value="5"><input class="number-input" id="quantity" type="number" min="1" max="500" value="5" inputmode="numeric"></div>
+          </div>
+          <div>
+            <span class="control-title" data-i18n="format">输出格式</span>
+            <div class="toggles">
+              <label class="switch-label"><input id="uppercase" type="checkbox"><span class="switch"></span><span data-i18n="uppercase">大写</span></label>
+              <label class="switch-label"><input id="hyphens" type="checkbox" checked><span class="switch"></span><span data-i18n="hyphens">连字符</span></label>
+              <label class="switch-label"><input id="braces" type="checkbox"><span class="switch"></span><span data-i18n="braces">花括号</span></label>
+            </div>
+          </div>
+        </div>
+        <div class="action-bar">
+          <button id="generateBtn" class="btn btn-primary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12a8 8 0 1 1-2.3-5.7M20 4v6h-6"/></svg><span data-i18n="generate">生成 UUID</span></button>
+          <button id="copyAllBtn" class="btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg><span data-i18n="copyAll">复制全部</span></button>
+          <button id="downloadBtn" class="btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14"/></svg><span data-i18n="download">下载 TXT</span></button>
+          <span class="spacer"></span>
+          <span class="shortcut" data-i18n="shortcut">快捷键：Ctrl / ⌘ + Enter</span>
+          <button id="clearBtn" class="btn btn-danger" title="Clear"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16m-10 4v6m4-6v6M9 7l1-3h4l1 3m3 0-1 14H7L6 7"/></svg><span data-i18n="clear">清空</span></button>
+        </div>
+        <div class="output">
+          <div class="output-head"><span class="result-count" id="resultCount">5 UUIDs</span><span data-i18n="clickCopy">点击右侧图标可复制单条</span></div>
+          <div id="uuidList" class="uuid-list" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <div class="ad-space" aria-label="Advertisement"><span data-i18n="advertisement">广告</span></div>
+
+      <section class="validator" aria-labelledby="validatorTitle">
+        <div class="section-head"><div><h2 id="validatorTitle" data-i18n="validatorTitle">UUID 校验器</h2><p data-i18n="validatorDesc">粘贴任意 UUID，立即检查格式与版本。</p></div></div>
+        <div class="validator-row"><input id="validatorInput" class="validator-input" type="text" autocomplete="off" spellcheck="false" placeholder="例如：550e8400-e29b-41d4-a716-446655440000"><button id="validateBtn" class="btn" data-i18n="validate">验证 UUID</button></div>
+        <div id="validationResult" class="validation-result" role="status"></div>
+      </section>
+    </section>
+
+    <section class="info-section wrap">
+      <div class="info-intro"><span class="mini" data-i18n="whyMini">为什么选择它</span><h2 data-i18n="whyTitle">为开发工作流而设计</h2><p data-i18n="whyDesc">从快速测试到生产数据准备，使用简洁、可靠、尊重隐私的 UUID 工具。</p></div>
+      <div class="features">
+        <article class="feature"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3 5 6v5c0 4.8 2.9 8.4 7 10 4.1-1.6 7-5.2 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-5"/></svg></div><h3 data-i18n="feature1Title">隐私优先</h3><p data-i18n="feature1Desc">UUID 在您的设备上生成，不会发送到任何服务器。</p></article>
+        <article class="feature"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m13 2-9 12h7l-1 8 10-13h-7V2Z"/></svg></div><h3 data-i18n="feature2Title">快速批量</h3><p data-i18n="feature2Desc">一次最多生成 500 个 UUID，并可一键复制或下载。</p></article>
+        <article class="feature"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 8 3 12l4 4m10-8 4 4-4 4M14 4l-4 16"/></svg></div><h3 data-i18n="feature3Title">标准兼容</h3><p data-i18n="feature3Desc">支持广泛使用的 UUID v4 与时间有序 UUID v7。</p></article>
+      </div>
+    </section>
+
+    <section class="faq wrap">
+      <h2 data-i18n="faqTitle">常见问题</h2>
+      <div class="faq-list">
+        <details><summary data-i18n="q1">什么是 UUID？</summary><p data-i18n="a1">UUID 是一个 128 位标识符，通常显示为 32 个十六进制字符。它用于在不同系统中唯一标识数据库记录、文件、会话或其他对象。</p></details>
+        <details><summary data-i18n="q2">UUID v4 和 v7 有什么区别？</summary><p data-i18n="a2">UUID v4 几乎完全随机，适合大多数场景。UUID v7 在开头包含时间戳，因此可以按创建时间排序，对数据库索引更友好。</p></details>
+        <details><summary data-i18n="q3">在线生成 UUID 安全吗？</summary><p data-i18n="a3">本工具使用浏览器的加密安全随机数生成器，并且所有操作均在本地完成。生成的 UUID 不会上传到服务器。</p></details>
+        <details><summary data-i18n="q4">UUID 会重复吗？</summary><p data-i18n="a4">理论上可能，但使用安全随机数生成的 UUID v4 发生碰撞的概率极低，在实际应用中通常可忽略。</p></details>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer"><div class="wrap footer-inner"><span>© <span id="year"></span> UUID Generator Pro</span><span class="privacy-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3 5 6v5c0 4.8 2.9 8.4 7 10 4.1-1.6 7-5.2 7-10V6l-7-3Z"/></svg><span data-i18n="footerPrivacy">100% 浏览器本地运行 · 不收集生成的数据</span></span></div></footer>
+  <div id="toast" class="toast" role="status"></div>
+
+  <script>
+    (() => {
+      'use strict';
+      const icons = {
+        copy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>',
+        check: '<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m5 12 4 4L19 6"/></svg>',
+        error: '<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v6m0 4h.01"/></svg>'
+      };
+
+      const translations = {
+        'zh-CN': { badge:'快速 · 安全 · 本地运行',heroA:'即时生成',heroB:'可靠的 UUID',heroDesc:'免费生成符合标准的 UUID v4 和时间有序 UUID v7。无需注册，数据不会离开您的浏览器。',trust1:'密码学安全随机数',trust2:'支持批量生成',trust3:'完全免费',generatorTitle:'UUID 生成器',v4Desc:'基于随机数的通用唯一标识符',v7Desc:'可按时间排序的新一代唯一标识符',quantity:'生成数量',format:'输出格式',uppercase:'大写',hyphens:'连字符',braces:'花括号',generate:'生成 UUID',copyAll:'复制全部',download:'下载 TXT',shortcut:'快捷键：Ctrl / ⌘ + Enter',clear:'清空',clickCopy:'点击右侧图标可复制单条',advertisement:'广告',validatorTitle:'UUID 校验器',validatorDesc:'粘贴任意 UUID，立即检查格式与版本。',validate:'验证 UUID',whyMini:'为什么选择它',whyTitle:'为开发工作流而设计',whyDesc:'从快速测试到生产数据准备，使用简洁、可靠、尊重隐私的 UUID 工具。',feature1Title:'隐私优先',feature1Desc:'UUID 在您的设备上生成，不会发送到任何服务器。',feature2Title:'快速批量',feature2Desc:'一次最多生成 500 个 UUID，并可一键复制或下载。',feature3Title:'标准兼容',feature3Desc:'支持广泛使用的 UUID v4 与时间有序 UUID v7。',faqTitle:'常见问题',q1:'什么是 UUID？',a1:'UUID 是一个 128 位标识符，通常显示为 32 个十六进制字符。它用于在不同系统中唯一标识数据库记录、文件、会话或其他对象。',q2:'UUID v4 和 v7 有什么区别？',a2:'UUID v4 几乎完全随机，适合大多数场景。UUID v7 在开头包含时间戳，因此可以按创建时间排序，对数据库索引更友好。',q3:'在线生成 UUID 安全吗？',a3:'本工具使用浏览器的加密安全随机数生成器，并且所有操作均在本地完成。生成的 UUID 不会上传到服务器。',q4:'UUID 会重复吗？',a4:'理论上可能，但使用安全随机数生成的 UUID v4 发生碰撞的概率极低，在实际应用中通常可忽略。',footerPrivacy:'100% 浏览器本地运行 · 不收集生成的数据',copied:'已复制',copiedAll:'已复制全部 UUID',downloaded:'下载已开始',cleared:'已清空',valid:'有效的 UUID',invalid:'无效的 UUID 格式',empty:'请先输入 UUID',emptyResults:'请先生成 UUID',version:'版本'},
+        'zh-TW': { badge:'快速 · 安全 · 本機執行',heroA:'即時產生',heroB:'可靠的 UUID',heroDesc:'免費產生符合標準的 UUID v4 與時間排序 UUID v7。無需註冊，資料不會離開您的瀏覽器。',trust1:'密碼學安全亂數',trust2:'支援批次產生',trust3:'完全免費',generatorTitle:'UUID 產生器',v4Desc:'以亂數為基礎的通用唯一識別碼',v7Desc:'可依時間排序的新一代唯一識別碼',quantity:'產生數量',format:'輸出格式',uppercase:'大寫',hyphens:'連字號',braces:'大括號',generate:'產生 UUID',copyAll:'複製全部',download:'下載 TXT',shortcut:'快速鍵：Ctrl / ⌘ + Enter',clear:'清空',clickCopy:'點擊右側圖示可複製單筆',advertisement:'廣告',validatorTitle:'UUID 驗證器',validatorDesc:'貼上任意 UUID，立即檢查格式與版本。',validate:'驗證 UUID',whyMini:'為何選擇它',whyTitle:'專為開發工作流程設計',whyDesc:'從快速測試到正式資料準備，使用簡潔、可靠且尊重隱私的 UUID 工具。',feature1Title:'隱私優先',feature1Desc:'UUID 在您的裝置上產生，不會傳送到任何伺服器。',feature2Title:'快速批次',feature2Desc:'一次最多產生 500 個 UUID，並可一鍵複製或下載。',feature3Title:'符合標準',feature3Desc:'支援廣泛使用的 UUID v4 與時間排序 UUID v7。',faqTitle:'常見問題',q1:'什麼是 UUID？',a1:'UUID 是 128 位元識別碼，通常顯示為 32 個十六進位字元，用於唯一識別資料庫記錄、檔案、工作階段或其他物件。',q2:'UUID v4 與 v7 有何不同？',a2:'UUID v4 幾乎完全隨機，適合多數情境。UUID v7 開頭包含時間戳記，可按建立時間排序，對資料庫索引更友善。',q3:'在線產生 UUID 安全嗎？',a3:'本工具使用瀏覽器的密碼學安全亂數產生器，所有操作均在本機完成，UUID 不會上傳。',q4:'UUID 會重複嗎？',a4:'理論上可能，但安全產生的 UUID v4 碰撞機率極低，實務上通常可忽略。',footerPrivacy:'100% 在瀏覽器本機執行 · 不收集產生的資料',copied:'已複製',copiedAll:'已複製全部 UUID',downloaded:'下載已開始',cleared:'已清空',valid:'有效的 UUID',invalid:'UUID 格式無效',empty:'請先輸入 UUID',emptyResults:'請先產生 UUID',version:'版本'},
+        en: { badge:'Fast · Secure · Local',heroA:'Generate reliable',heroB:'UUIDs instantly',heroDesc:'Create standards-compliant UUID v4 and time-ordered UUID v7 identifiers for free. No signup, and your data never leaves the browser.',trust1:'Cryptographically secure',trust2:'Bulk generation',trust3:'Free forever',generatorTitle:'UUID Generator',v4Desc:'Random-based universally unique identifiers',v7Desc:'Next-generation, time-sortable identifiers',quantity:'Quantity',format:'Output format',uppercase:'Uppercase',hyphens:'Hyphens',braces:'Braces',generate:'Generate UUIDs',copyAll:'Copy all',download:'Download TXT',shortcut:'Shortcut: Ctrl / ⌘ + Enter',clear:'Clear',clickCopy:'Use the icon to copy one item',advertisement:'Advertisement',validatorTitle:'UUID Validator',validatorDesc:'Paste any UUID to check its format and version instantly.',validate:'Validate UUID',whyMini:'Why use it',whyTitle:'Built for developer workflows',whyDesc:'From quick tests to production data prep, use a clean, dependable UUID tool that respects your privacy.',feature1Title:'Privacy first',feature1Desc:'UUIDs are generated on your device and are never sent to a server.',feature2Title:'Fast in bulk',feature2Desc:'Generate up to 500 UUIDs at once, then copy or download in one click.',feature3Title:'Standards ready',feature3Desc:'Supports widely used UUID v4 and time-sortable UUID v7.',faqTitle:'Frequently asked questions',q1:'What is a UUID?',a1:'A UUID is a 128-bit identifier, commonly displayed as 32 hexadecimal characters. It uniquely identifies database rows, files, sessions, and other objects across systems.',q2:'What is the difference between UUID v4 and v7?',a2:'UUID v4 is almost entirely random and fits most use cases. UUID v7 begins with a timestamp, making it sortable by creation time and friendlier to database indexes.',q3:'Is it safe to generate UUIDs online?',a3:'This tool uses your browser’s cryptographically secure random generator. Everything happens locally, and generated UUIDs are never uploaded.',q4:'Can UUIDs collide?',a4:'It is theoretically possible, but the collision probability for securely generated UUID v4 values is so small that it is negligible in practice.',footerPrivacy:'100% local in your browser · Generated data is not collected',copied:'Copied',copiedAll:'All UUIDs copied',downloaded:'Download started',cleared:'Cleared',valid:'Valid UUID',invalid:'Invalid UUID format',empty:'Enter a UUID first',emptyResults:'Generate UUIDs first',version:'Version'},
+        ja: { badge:'高速 · 安全 · ローカル処理',heroA:'信頼できる UUID を',heroB:'瞬時に生成',heroDesc:'標準準拠の UUID v4 と時系列 UUID v7 を無料で生成。登録不要で、データはブラウザの外に送信されません。',trust1:'暗号学的に安全',trust2:'一括生成対応',trust3:'完全無料',generatorTitle:'UUID ジェネレーター',v4Desc:'ランダムベースの汎用一意識別子',v7Desc:'時系列で並べ替え可能な次世代識別子',quantity:'生成数',format:'出力形式',uppercase:'大文字',hyphens:'ハイフン',braces:'波括弧',generate:'UUID を生成',copyAll:'すべてコピー',download:'TXT をダウンロード',shortcut:'ショートカット：Ctrl / ⌘ + Enter',clear:'クリア',clickCopy:'右側のアイコンで個別コピー',advertisement:'広告',validatorTitle:'UUID バリデーター',validatorDesc:'UUID を貼り付けて形式とバージョンを確認します。',validate:'UUID を検証',whyMini:'選ばれる理由',whyTitle:'開発ワークフローのための設計',whyDesc:'簡単なテストから本番データの準備まで、プライバシーを尊重する信頼性の高いツールです。',feature1Title:'プライバシー優先',feature1Desc:'UUID は端末上で生成され、サーバーには送信されません。',feature2Title:'高速一括生成',feature2Desc:'一度に最大 500 個を生成し、コピーまたはダウンロードできます。',feature3Title:'標準に準拠',feature3Desc:'広く利用される UUID v4 と時系列 UUID v7 に対応。',faqTitle:'よくある質問',q1:'UUID とは？',a1:'UUID は 128 ビットの識別子で、通常は 32 桁の16進文字で表示されます。データベース行、ファイル、セッションなどを一意に識別します。',q2:'UUID v4 と v7 の違いは？',a2:'v4 はほぼ完全にランダムです。v7 は先頭にタイムスタンプを含み、作成時間順に並べられるためデータベース索引に適しています。',q3:'オンライン生成は安全ですか？',a3:'ブラウザの暗号学的に安全な乱数生成器を使用し、処理はすべてローカルで行われます。',q4:'UUID は重複しますか？',a4:'理論上は可能ですが、安全に生成された UUID v4 の衝突確率は実用上無視できるほど低いです。',footerPrivacy:'ブラウザ内で100%ローカル処理 · 生成データは収集しません',copied:'コピーしました',copiedAll:'すべてコピーしました',downloaded:'ダウンロードを開始しました',cleared:'クリアしました',valid:'有効な UUID',invalid:'UUID の形式が無効です',empty:'UUID を入力してください',emptyResults:'先に UUID を生成してください',version:'バージョン'},
+        fr: { badge:'Rapide · Sûr · Local',heroA:'Générez des UUID',heroB:'fiables instantanément',heroDesc:'Créez gratuitement des UUID v4 conformes et des UUID v7 triables par date. Sans inscription, vos données restent dans le navigateur.',trust1:'Sécurité cryptographique',trust2:'Génération en lot',trust3:'Toujours gratuit',generatorTitle:'Générateur d’UUID',v4Desc:'Identifiants universels uniques aléatoires',v7Desc:'Identifiants nouvelle génération triables par date',quantity:'Quantité',format:'Format de sortie',uppercase:'Majuscules',hyphens:'Tirets',braces:'Accolades',generate:'Générer les UUID',copyAll:'Tout copier',download:'Télécharger TXT',shortcut:'Raccourci : Ctrl / ⌘ + Entrée',clear:'Effacer',clickCopy:'Utilisez l’icône pour copier un élément',advertisement:'Publicité',validatorTitle:'Validateur d’UUID',validatorDesc:'Collez un UUID pour vérifier son format et sa version.',validate:'Valider l’UUID',whyMini:'Pourquoi cet outil',whyTitle:'Conçu pour les développeurs',whyDesc:'Des tests rapides aux données de production, un outil simple, fiable et respectueux de votre vie privée.',feature1Title:'Confidentialité',feature1Desc:'Les UUID sont générés sur votre appareil et jamais envoyés à un serveur.',feature2Title:'Lots rapides',feature2Desc:'Générez jusqu’à 500 UUID à la fois, puis copiez ou téléchargez.',feature3Title:'Conforme aux normes',feature3Desc:'Prend en charge UUID v4 et UUID v7 triable par date.',faqTitle:'Questions fréquentes',q1:'Qu’est-ce qu’un UUID ?',a1:'Un UUID est un identifiant de 128 bits, généralement affiché avec 32 caractères hexadécimaux, qui identifie de façon unique des données entre systèmes.',q2:'Quelle différence entre UUID v4 et v7 ?',a2:'UUID v4 est presque entièrement aléatoire. UUID v7 commence par un horodatage et se trie par date de création, ce qui aide les index de bases de données.',q3:'La génération en ligne est-elle sûre ?',a3:'Cet outil utilise le générateur aléatoire cryptographiquement sûr du navigateur. Tout est local et aucun UUID n’est envoyé.',q4:'Deux UUID peuvent-ils être identiques ?',a4:'C’est théoriquement possible, mais la probabilité avec un UUID v4 sécurisé est négligeable en pratique.',footerPrivacy:'100 % local dans votre navigateur · Aucune donnée générée collectée',copied:'Copié',copiedAll:'Tous les UUID sont copiés',downloaded:'Téléchargement lancé',cleared:'Effacé',valid:'UUID valide',invalid:'Format UUID invalide',empty:'Saisissez d’abord un UUID',emptyResults:'Générez d’abord des UUID',version:'Version'},
+        de: { badge:'Schnell · Sicher · Lokal',heroA:'Zuverlässige UUIDs',heroB:'sofort generieren',heroDesc:'Erstellen Sie kostenlos standardkonforme UUID v4 und zeitlich sortierbare UUID v7. Ohne Anmeldung, alle Daten bleiben im Browser.',trust1:'Kryptografisch sicher',trust2:'Stapelgenerierung',trust3:'Dauerhaft kostenlos',generatorTitle:'UUID-Generator',v4Desc:'Zufallsbasierte universell eindeutige Kennungen',v7Desc:'Zeitlich sortierbare Kennungen der nächsten Generation',quantity:'Anzahl',format:'Ausgabeformat',uppercase:'Großbuchstaben',hyphens:'Bindestriche',braces:'Klammern',generate:'UUIDs generieren',copyAll:'Alle kopieren',download:'TXT herunterladen',shortcut:'Tastenkürzel: Strg / ⌘ + Enter',clear:'Leeren',clickCopy:'Einzelne UUID über das Symbol kopieren',advertisement:'Werbung',validatorTitle:'UUID-Prüfer',validatorDesc:'UUID einfügen und Format sowie Version sofort prüfen.',validate:'UUID prüfen',whyMini:'Ihre Vorteile',whyTitle:'Für Entwickler-Workflows gebaut',whyDesc:'Von schnellen Tests bis zu Produktionsdaten: ein klares, zuverlässiges und datenschutzfreundliches Tool.',feature1Title:'Datenschutz zuerst',feature1Desc:'UUIDs entstehen auf Ihrem Gerät und werden nie an einen Server gesendet.',feature2Title:'Schnelle Stapel',feature2Desc:'Bis zu 500 UUIDs auf einmal generieren, kopieren oder herunterladen.',feature3Title:'Standardkonform',feature3Desc:'Unterstützt UUID v4 und zeitlich sortierbare UUID v7.',faqTitle:'Häufige Fragen',q1:'Was ist eine UUID?',a1:'Eine UUID ist eine 128-Bit-Kennung mit meist 32 Hexadezimalzeichen. Sie identifiziert Datenbankzeilen, Dateien, Sitzungen und andere Objekte systemübergreifend.',q2:'Was unterscheidet UUID v4 und v7?',a2:'UUID v4 ist fast vollständig zufällig. UUID v7 beginnt mit einem Zeitstempel, ist nach Erstellzeit sortierbar und eignet sich besser für Datenbankindizes.',q3:'Ist die Online-Generierung sicher?',a3:'Dieses Tool nutzt den kryptografisch sicheren Zufallsgenerator Ihres Browsers. Alles erfolgt lokal; UUIDs werden nie hochgeladen.',q4:'Können UUIDs kollidieren?',a4:'Theoretisch ja, aber bei sicher erzeugten UUID v4 ist die Wahrscheinlichkeit in der Praxis vernachlässigbar.',footerPrivacy:'100 % lokal im Browser · Generierte Daten werden nicht erfasst',copied:'Kopiert',copiedAll:'Alle UUIDs kopiert',downloaded:'Download gestartet',cleared:'Geleert',valid:'Gültige UUID',invalid:'Ungültiges UUID-Format',empty:'Bitte zuerst eine UUID eingeben',emptyResults:'Bitte zuerst UUIDs generieren',version:'Version'},
+        es: { badge:'Rápido · Seguro · Local',heroA:'Genera UUID fiables',heroB:'al instante',heroDesc:'Crea gratis UUID v4 y UUID v7 ordenables por tiempo. Sin registro; tus datos nunca salen del navegador.',trust1:'Seguridad criptográfica',trust2:'Generación por lotes',trust3:'Siempre gratis',generatorTitle:'Generador de UUID',v4Desc:'Identificadores únicos universales aleatorios',v7Desc:'Identificadores modernos ordenables por tiempo',quantity:'Cantidad',format:'Formato de salida',uppercase:'Mayúsculas',hyphens:'Guiones',braces:'Llaves',generate:'Generar UUID',copyAll:'Copiar todo',download:'Descargar TXT',shortcut:'Atajo: Ctrl / ⌘ + Enter',clear:'Limpiar',clickCopy:'Usa el icono para copiar uno',advertisement:'Publicidad',validatorTitle:'Validador de UUID',validatorDesc:'Pega cualquier UUID para comprobar formato y versión.',validate:'Validar UUID',whyMini:'Por qué usarlo',whyTitle:'Creado para desarrolladores',whyDesc:'Una herramienta limpia, fiable y privada, desde pruebas rápidas hasta datos de producción.',feature1Title:'Privacidad primero',feature1Desc:'Los UUID se generan en tu dispositivo y nunca se envían a servidores.',feature2Title:'Lotes rápidos',feature2Desc:'Genera hasta 500 UUID, cópialos o descárgalos con un clic.',feature3Title:'Compatible con estándares',feature3Desc:'Admite UUID v4 y UUID v7 ordenable por tiempo.',faqTitle:'Preguntas frecuentes',q1:'¿Qué es un UUID?',a1:'Un UUID es un identificador de 128 bits que identifica de forma única registros, archivos, sesiones y otros objetos.',q2:'¿Qué diferencia hay entre UUID v4 y v7?',a2:'UUID v4 es casi totalmente aleatorio. UUID v7 empieza con una marca temporal, por lo que se ordena por creación y mejora los índices.',q3:'¿Es seguro generar UUID en línea?',a3:'La herramienta usa el generador criptográfico del navegador. Todo ocurre localmente y nada se sube.',q4:'¿Pueden repetirse?',a4:'Es posible en teoría, pero la probabilidad de colisión de UUID v4 seguros es insignificante.',footerPrivacy:'100 % local en tu navegador · No recopilamos datos generados',copied:'Copiado',copiedAll:'Todos los UUID copiados',downloaded:'Descarga iniciada',cleared:'Limpio',valid:'UUID válido',invalid:'Formato UUID no válido',empty:'Introduce primero un UUID',emptyResults:'Genera primero UUID',version:'Versión'},
+        pt: { badge:'Rápido · Seguro · Local',heroA:'Gere UUIDs confiáveis',heroB:'instantaneamente',heroDesc:'Crie UUID v4 e UUID v7 ordenável por tempo gratuitamente. Sem cadastro; seus dados ficam no navegador.',trust1:'Seguro criptograficamente',trust2:'Geração em lote',trust3:'Sempre grátis',generatorTitle:'Gerador de UUID',v4Desc:'Identificadores universais únicos aleatórios',v7Desc:'Identificadores modernos ordenáveis por tempo',quantity:'Quantidade',format:'Formato de saída',uppercase:'Maiúsculas',hyphens:'Hífens',braces:'Chaves',generate:'Gerar UUIDs',copyAll:'Copiar tudo',download:'Baixar TXT',shortcut:'Atalho: Ctrl / ⌘ + Enter',clear:'Limpar',clickCopy:'Use o ícone para copiar um item',advertisement:'Publicidade',validatorTitle:'Validador de UUID',validatorDesc:'Cole um UUID para verificar o formato e a versão.',validate:'Validar UUID',whyMini:'Por que usar',whyTitle:'Feito para desenvolvedores',whyDesc:'Uma ferramenta limpa, confiável e privada, de testes rápidos a dados de produção.',feature1Title:'Privacidade primeiro',feature1Desc:'UUIDs são gerados no seu dispositivo e nunca enviados a servidores.',feature2Title:'Lotes rápidos',feature2Desc:'Gere até 500 UUIDs, copie ou baixe com um clique.',feature3Title:'Compatível com padrões',feature3Desc:'Suporta UUID v4 e UUID v7 ordenável por tempo.',faqTitle:'Perguntas frequentes',q1:'O que é UUID?',a1:'UUID é um identificador de 128 bits usado para identificar exclusivamente registros, arquivos, sessões e outros objetos.',q2:'Qual a diferença entre UUID v4 e v7?',a2:'UUID v4 é quase totalmente aleatório. UUID v7 começa com timestamp, pode ser ordenado por criação e favorece índices.',q3:'É seguro gerar UUID online?',a3:'A ferramenta usa o gerador criptográfico do navegador. Tudo acontece localmente e nada é enviado.',q4:'UUIDs podem se repetir?',a4:'É teoricamente possível, mas a chance de colisão de UUID v4 seguros é desprezível.',footerPrivacy:'100% local no navegador · Dados gerados não são coletados',copied:'Copiado',copiedAll:'Todos os UUIDs copiados',downloaded:'Download iniciado',cleared:'Limpo',valid:'UUID válido',invalid:'Formato UUID inválido',empty:'Digite primeiro um UUID',emptyResults:'Gere UUIDs primeiro',version:'Versão'},
+        ko: { badge:'빠름 · 안전 · 로컬 실행',heroA:'신뢰할 수 있는 UUID를',heroB:'즉시 생성',heroDesc:'표준 UUID v4와 시간 정렬 UUID v7을 무료로 생성하세요. 가입이 필요 없고 데이터는 브라우저를 벗어나지 않습니다.',trust1:'암호학적으로 안전',trust2:'일괄 생성',trust3:'완전 무료',generatorTitle:'UUID 생성기',v4Desc:'무작위 기반 범용 고유 식별자',v7Desc:'시간순 정렬이 가능한 차세대 식별자',quantity:'생성 수량',format:'출력 형식',uppercase:'대문자',hyphens:'하이픈',braces:'중괄호',generate:'UUID 생성',copyAll:'모두 복사',download:'TXT 다운로드',shortcut:'단축키: Ctrl / ⌘ + Enter',clear:'지우기',clickCopy:'오른쪽 아이콘으로 개별 복사',advertisement:'광고',validatorTitle:'UUID 검증기',validatorDesc:'UUID를 붙여넣어 형식과 버전을 확인하세요.',validate:'UUID 검증',whyMini:'선택하는 이유',whyTitle:'개발자 워크플로를 위한 설계',whyDesc:'빠른 테스트부터 운영 데이터까지, 깔끔하고 신뢰할 수 있으며 개인정보를 존중합니다.',feature1Title:'개인정보 우선',feature1Desc:'UUID는 기기에서 생성되며 서버로 전송되지 않습니다.',feature2Title:'빠른 일괄 생성',feature2Desc:'한 번에 최대 500개를 생성하고 복사하거나 다운로드합니다.',feature3Title:'표준 호환',feature3Desc:'UUID v4와 시간 정렬 UUID v7을 지원합니다.',faqTitle:'자주 묻는 질문',q1:'UUID란 무엇인가요?',a1:'UUID는 128비트 식별자로 데이터베이스 행, 파일, 세션 등을 시스템 전체에서 고유하게 식별합니다.',q2:'UUID v4와 v7의 차이는?',a2:'v4는 거의 완전 무작위입니다. v7은 시작 부분에 타임스탬프가 있어 생성 시간순 정렬과 데이터베이스 인덱스에 유리합니다.',q3:'온라인 생성은 안전한가요?',a3:'브라우저의 암호학적으로 안전한 난수 생성기를 사용하며 모든 작업은 로컬에서 처리됩니다.',q4:'UUID가 중복될 수 있나요?',a4:'이론적으로 가능하지만 안전한 UUID v4의 충돌 확률은 실무에서 무시할 만큼 낮습니다.',footerPrivacy:'브라우저에서 100% 로컬 실행 · 생성 데이터 미수집',copied:'복사됨',copiedAll:'모든 UUID 복사됨',downloaded:'다운로드 시작됨',cleared:'지워짐',valid:'유효한 UUID',invalid:'유효하지 않은 UUID 형식',empty:'UUID를 먼저 입력하세요',emptyResults:'UUID를 먼저 생성하세요',version:'버전'},
+        it: { badge:'Veloce · Sicuro · Locale',heroA:'Genera UUID affidabili',heroB:'all’istante',heroDesc:'Crea gratis UUID v4 e UUID v7 ordinabili nel tempo. Nessuna registrazione, i dati restano nel browser.',trust1:'Sicurezza crittografica',trust2:'Generazione in serie',trust3:'Sempre gratuito',generatorTitle:'Generatore UUID',v4Desc:'Identificatori univoci universali casuali',v7Desc:'Identificatori moderni ordinabili nel tempo',quantity:'Quantità',format:'Formato output',uppercase:'Maiuscolo',hyphens:'Trattini',braces:'Parentesi graffe',generate:'Genera UUID',copyAll:'Copia tutto',download:'Scarica TXT',shortcut:'Scorciatoia: Ctrl / ⌘ + Invio',clear:'Cancella',clickCopy:'Usa l’icona per copiare un elemento',advertisement:'Pubblicità',validatorTitle:'Validatore UUID',validatorDesc:'Incolla un UUID per verificarne formato e versione.',validate:'Valida UUID',whyMini:'Perché usarlo',whyTitle:'Creato per gli sviluppatori',whyDesc:'Uno strumento semplice, affidabile e privato, dai test rapidi ai dati di produzione.',feature1Title:'Privacy prima di tutto',feature1Desc:'Gli UUID vengono generati sul dispositivo e mai inviati a server.',feature2Title:'Serie veloci',feature2Desc:'Genera fino a 500 UUID, copiali o scaricali con un clic.',feature3Title:'Conforme agli standard',feature3Desc:'Supporta UUID v4 e UUID v7 ordinabili nel tempo.',faqTitle:'Domande frequenti',q1:'Cos’è un UUID?',a1:'Un UUID è un identificatore a 128 bit per distinguere in modo univoco record, file, sessioni e altri oggetti.',q2:'Qual è la differenza tra UUID v4 e v7?',a2:'UUID v4 è quasi interamente casuale. UUID v7 inizia con un timestamp, quindi è ordinabile per creazione e agevola gli indici.',q3:'Generare UUID online è sicuro?',a3:'Lo strumento usa il generatore crittografico del browser. Tutto avviene localmente e nulla viene caricato.',q4:'Gli UUID possono duplicarsi?',a4:'È teoricamente possibile, ma la probabilità di collisione per UUID v4 sicuri è trascurabile.',footerPrivacy:'100% locale nel browser · I dati generati non vengono raccolti',copied:'Copiato',copiedAll:'Tutti gli UUID copiati',downloaded:'Download avviato',cleared:'Cancellato',valid:'UUID valido',invalid:'Formato UUID non valido',empty:'Inserisci prima un UUID',emptyResults:'Genera prima gli UUID',version:'Versione'},
+        ru: { badge:'Быстро · Безопасно · Локально',heroA:'Надёжные UUID',heroB:'мгновенно',heroDesc:'Бесплатно создавайте UUID v4 и сортируемые по времени UUID v7. Без регистрации, данные остаются в браузере.',trust1:'Криптографическая защита',trust2:'Пакетная генерация',trust3:'Всегда бесплатно',generatorTitle:'Генератор UUID',v4Desc:'Случайные универсальные уникальные идентификаторы',v7Desc:'Современные идентификаторы с сортировкой по времени',quantity:'Количество',format:'Формат вывода',uppercase:'Верхний регистр',hyphens:'Дефисы',braces:'Скобки',generate:'Создать UUID',copyAll:'Копировать все',download:'Скачать TXT',shortcut:'Сочетание: Ctrl / ⌘ + Enter',clear:'Очистить',clickCopy:'Нажмите значок для копирования',advertisement:'Реклама',validatorTitle:'Проверка UUID',validatorDesc:'Вставьте UUID для проверки формата и версии.',validate:'Проверить UUID',whyMini:'Почему этот инструмент',whyTitle:'Создано для разработчиков',whyDesc:'Чистый, надёжный и конфиденциальный инструмент — от тестов до рабочих данных.',feature1Title:'Конфиденциальность',feature1Desc:'UUID создаются на вашем устройстве и не отправляются на сервер.',feature2Title:'Быстрые пакеты',feature2Desc:'До 500 UUID за раз с копированием и загрузкой.',feature3Title:'Поддержка стандартов',feature3Desc:'Поддерживаются UUID v4 и сортируемые UUID v7.',faqTitle:'Частые вопросы',q1:'Что такое UUID?',a1:'UUID — 128-битный идентификатор для уникального обозначения записей, файлов, сеансов и других объектов.',q2:'Чем отличаются UUID v4 и v7?',a2:'UUID v4 почти полностью случаен. UUID v7 начинается с метки времени, поэтому сортируется по дате и удобнее для индексов.',q3:'Безопасна ли онлайн-генерация?',a3:'Инструмент использует криптографический генератор браузера. Всё выполняется локально, UUID не загружаются.',q4:'Могут ли UUID совпасть?',a4:'Теоретически да, но вероятность коллизии безопасных UUID v4 практически ничтожна.',footerPrivacy:'100% локально в браузере · Данные не собираются',copied:'Скопировано',copiedAll:'Все UUID скопированы',downloaded:'Загрузка началась',cleared:'Очищено',valid:'Корректный UUID',invalid:'Некорректный формат UUID',empty:'Сначала введите UUID',emptyResults:'Сначала создайте UUID',version:'Версия'},
+        ar: { badge:'سريع · آمن · محلي',heroA:'أنشئ UUID موثوقًا',heroB:'على الفور',heroDesc:'أنشئ UUID v4 وUUID v7 القابل للترتيب زمنيًا مجانًا. بلا تسجيل، وتبقى بياناتك في المتصفح.',trust1:'عشوائية آمنة تشفيريًا',trust2:'إنشاء دفعات',trust3:'مجاني دائمًا',generatorTitle:'مولّد UUID',v4Desc:'معرّفات فريدة عامة مبنية على العشوائية',v7Desc:'معرّفات حديثة قابلة للترتيب حسب الوقت',quantity:'الكمية',format:'تنسيق الإخراج',uppercase:'أحرف كبيرة',hyphens:'شرطات',braces:'أقواس',generate:'إنشاء UUID',copyAll:'نسخ الكل',download:'تنزيل TXT',shortcut:'الاختصار: Ctrl / ⌘ + Enter',clear:'مسح',clickCopy:'استخدم الأيقونة لنسخ عنصر',advertisement:'إعلان',validatorTitle:'مدقق UUID',validatorDesc:'ألصق أي UUID للتحقق من تنسيقه وإصداره.',validate:'تحقق من UUID',whyMini:'لماذا تستخدمه',whyTitle:'مصمم لسير عمل المطورين',whyDesc:'أداة واضحة وموثوقة وتحترم الخصوصية، من الاختبارات السريعة إلى بيانات الإنتاج.',feature1Title:'الخصوصية أولًا',feature1Desc:'يتم إنشاء UUID على جهازك ولا يُرسل إلى أي خادم.',feature2Title:'دفعات سريعة',feature2Desc:'أنشئ حتى 500 UUID وانسخها أو نزّلها بنقرة.',feature3Title:'متوافق مع المعايير',feature3Desc:'يدعم UUID v4 وUUID v7 القابل للترتيب زمنيًا.',faqTitle:'الأسئلة الشائعة',q1:'ما هو UUID؟',a1:'UUID معرّف 128 بت يُستخدم لتمييز السجلات والملفات والجلسات والكائنات بشكل فريد.',q2:'ما الفرق بين UUID v4 وv7؟',a2:'UUID v4 عشوائي تقريبًا بالكامل. يبدأ UUID v7 بطابع زمني، لذا يمكن ترتيبه حسب الإنشاء وهو أفضل لفهارس قواعد البيانات.',q3:'هل الإنشاء عبر الإنترنت آمن؟',a3:'تستخدم الأداة مولّد المتصفح الآمن تشفيريًا. تتم كل العمليات محليًا ولا يتم رفع UUID.',q4:'هل يمكن أن يتكرر UUID؟',a4:'هذا ممكن نظريًا، لكن احتمال تصادم UUID v4 الآمن ضئيل جدًا عمليًا.',footerPrivacy:'محلي 100% في متصفحك · لا نجمع البيانات المُنشأة',copied:'تم النسخ',copiedAll:'تم نسخ جميع UUID',downloaded:'بدأ التنزيل',cleared:'تم المسح',valid:'UUID صالح',invalid:'تنسيق UUID غير صالح',empty:'أدخل UUID أولًا',emptyResults:'أنشئ UUID أولًا',version:'الإصدار'}
+      };
+
+      const $ = id => document.getElementById(id);
+      const state = { version: 4, uuids: [], lang: 'zh-CN' };
+      const safeStorage = {
+        get(key) { try { return localStorage.getItem(key); } catch (_) { return null; } },
+        set(key, value) { try { localStorage.setItem(key, value); } catch (_) {} }
+      };
+
+      function bytesToUuid(bytes) {
+        const h = Array.from(bytes, b => b.toString(16).padStart(2, '0')).join('');
+        return `${h.slice(0,8)}-${h.slice(8,12)}-${h.slice(12,16)}-${h.slice(16,20)}-${h.slice(20)}`;
+      }
+      function uuidV4() {
+        if (crypto.randomUUID) return crypto.randomUUID();
+        const b = crypto.getRandomValues(new Uint8Array(16));
+        b[6] = (b[6] & 0x0f) | 0x40; b[8] = (b[8] & 0x3f) | 0x80;
+        return bytesToUuid(b);
+      }
+      function uuidV7() {
+        const b = crypto.getRandomValues(new Uint8Array(16));
+        let ms = Date.now();
+        for (let i = 5; i >= 0; i--) { b[i] = ms & 0xff; ms = Math.floor(ms / 256); }
+        b[6] = (b[6] & 0x0f) | 0x70; b[8] = (b[8] & 0x3f) | 0x80;
+        return bytesToUuid(b);
+      }
+      function formatUuid(uuid) {
+        let value = $('hyphens').checked ? uuid : uuid.replace(/-/g, '');
+        if ($('uppercase').checked) value = value.toUpperCase();
+        return $('braces').checked ? `{${value}}` : value;
+      }
+      function getText(key) { return (translations[state.lang] || translations.en)[key] || translations.en[key] || key; }
+      function render() {
+        const list = $('uuidList'); list.textContent = '';
+        state.uuids.forEach((uuid, i) => {
+          const row = document.createElement('div'); row.className = 'uuid-row'; row.style.animationDelay = `${Math.min(i * 18, 180)}ms`;
+          const index = document.createElement('span'); index.className = 'row-index'; index.textContent = String(i + 1).padStart(2, '0');
+          const value = document.createElement('code'); value.className = 'uuid-value'; value.textContent = formatUuid(uuid); value.title = formatUuid(uuid);
+          const copy = document.createElement('button'); copy.className = 'copy-one'; copy.innerHTML = icons.copy; copy.setAttribute('aria-label', getText('copied'));
+          copy.addEventListener('click', () => copyText(formatUuid(uuid), getText('copied')));
+          row.append(index, value, copy); list.appendChild(row);
+        });
+        $('resultCount').textContent = `${state.uuids.length} UUID${state.uuids.length === 1 ? '' : 's'}`;
+      }
+      function generate() {
+        const count = Math.max(1, Math.min(500, parseInt($('quantity').value, 10) || 1));
+        $('quantity').value = count; $('quantityRange').value = Math.min(100, count);
+        state.uuids = Array.from({ length: count }, () => state.version === 7 ? uuidV7() : uuidV4());
+        render();
+      }
+      async function copyText(text, message) {
+        try { await navigator.clipboard.writeText(text); }
+        catch (_) { const area = document.createElement('textarea'); area.value = text; area.style.position = 'fixed'; area.style.opacity = '0'; document.body.appendChild(area); area.select(); document.execCommand('copy'); area.remove(); }
+        showToast(message);
+      }
+      let toastTimer;
+      function showToast(message) { const toast = $('toast'); toast.textContent = message; toast.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(() => toast.classList.remove('show'), 1800); }
+      function applyLanguage(lang) {
+        state.lang = translations[lang] ? lang : 'en';
+        document.documentElement.lang = state.lang; document.documentElement.dir = state.lang === 'ar' ? 'rtl' : 'ltr';
+        document.querySelectorAll('[data-i18n]').forEach(el => { const text = getText(el.dataset.i18n); if (text) el.textContent = text; });
+        $('versionDesc').textContent = getText(state.version === 4 ? 'v4Desc' : 'v7Desc');
+        $('language').value = state.lang; safeStorage.set('uuid-lang', state.lang); render();
+      }
+      function setTheme(theme) {
+        document.documentElement.dataset.theme = theme; safeStorage.set('uuid-theme', theme);
+        $('themeIcon').innerHTML = theme === 'dark' ? '<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>' : '<path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.7 6.7 0 0 0 9.8 9.8Z"/>';
+      }
+      function validateUuid() {
+        const result = $('validationResult'); const raw = $('validatorInput').value.trim().replace(/^\{|\}$/g, '');
+        if (!raw) { result.className = 'validation-result show invalid'; result.innerHTML = icons.error + `<span>${getText('empty')}</span>`; return; }
+        const match = raw.match(/^[0-9a-f]{8}-?[0-9a-f]{4}-?([1-8])[0-9a-f]{3}-?([89ab])[0-9a-f]{3}-?[0-9a-f]{12}$/i);
+        if (match) { result.className = 'validation-result show valid'; result.innerHTML = icons.check + `<span>${getText('valid')} · ${getText('version')} ${match[1]}</span>`; }
+        else { result.className = 'validation-result show invalid'; result.innerHTML = icons.error + `<span>${getText('invalid')}</span>`; }
+      }
+
+      document.querySelectorAll('.tab').forEach(tab => tab.addEventListener('click', () => {
+        state.version = Number(tab.dataset.version);
+        document.querySelectorAll('.tab').forEach(t => { const active = t === tab; t.classList.toggle('active', active); t.setAttribute('aria-selected', String(active)); });
+        $('versionDesc').textContent = getText(state.version === 4 ? 'v4Desc' : 'v7Desc'); generate();
+      }));
+      $('generateBtn').addEventListener('click', generate);
+      $('quantityRange').addEventListener('input', e => { $('quantity').value = e.target.value; });
+      $('quantity').addEventListener('input', e => { if (+e.target.value <= 100) $('quantityRange').value = e.target.value || 1; });
+      ['uppercase','hyphens','braces'].forEach(id => $(id).addEventListener('change', render));
+      $('copyAllBtn').addEventListener('click', () => state.uuids.length ? copyText(state.uuids.map(formatUuid).join('\n'), getText('copiedAll')) : showToast(getText('emptyResults')));
+      $('downloadBtn').addEventListener('click', () => {
+        if (!state.uuids.length) return showToast(getText('emptyResults'));
+        const blob = new Blob([state.uuids.map(formatUuid).join('\n') + '\n'], { type: 'text/plain;charset=utf-8' });
+        const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = `uuid-v${state.version}-${state.uuids.length}.txt`; link.click(); setTimeout(() => URL.revokeObjectURL(link.href), 1000); showToast(getText('downloaded'));
+      });
+      $('clearBtn').addEventListener('click', () => { state.uuids = []; render(); showToast(getText('cleared')); });
+      $('validateBtn').addEventListener('click', validateUuid);
+      $('validatorInput').addEventListener('keydown', e => { if (e.key === 'Enter') validateUuid(); });
+      $('language').addEventListener('change', e => applyLanguage(e.target.value));
+      $('themeBtn').addEventListener('click', () => setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'));
+      document.addEventListener('keydown', e => { if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); generate(); } });
+
+      $('year').textContent = new Date().getFullYear();
+      const preferredLang = safeStorage.get('uuid-lang') || (navigator.language.startsWith('zh-TW') || navigator.language.startsWith('zh-HK') ? 'zh-TW' : Object.keys(translations).find(k => navigator.language.toLowerCase().startsWith(k.toLowerCase())) || 'en');
+      const preferredTheme = safeStorage.get('uuid-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      setTheme(preferredTheme); applyLanguage(preferredLang); generate();
+    })();
+  </script>
+</body>
+</html>
